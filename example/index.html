@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>onedollar.js Example</title>
+    <style>
+        .sketch {
+            display: inline-block;
+            position: relative;
+            background: #f1f1f1;
+            width: 500px; height: 500px;
+            outline: none;
+        }
+    </style>
+    <script src="../lib/onedollar.js"></script>
+    <script src="js/processing-1.4.1-api.min.js"></script>
+</head>
+<body>
+    <canvas class="sketch" id="js-sketch" width="500px" height="500px"></canvas>
+    <script>
+
+        // OneDollar
+        var one = new OneDollar();
+
+        // Processing.js / Canvas
+        new Processing(document.getElementById('js-sketch'),function(p){
+            var move, draw, l, i;
+            p.setup = function(){
+                p.size(500, 500);
+                p.background(200);
+                
+                move = [];
+                draw = false;
+                
+                p.noFill();
+                p.stroke(20);
+            };
+            p.draw = function(){
+                p.background(200);
+                
+                if(draw===true){
+                    i = 0;
+                    p.beginShape();
+                    for (l=move.length; i<l; i++) {
+                        p.vertex(move[i].x, move[i].y);
+                    }
+                    p.endShape();
+                }
+            };
+            p.mousePressed = function(){
+                draw = true;
+            };
+            p.mouseDragged = function(){
+                move.push( new p.PVector(p.mouseX, p.mouseY) );
+            };
+            p.mouseReleased = function(){
+                draw = false;
+                move = [];
+            };
+        });
+
+    </script>
+</body>
+</html>
