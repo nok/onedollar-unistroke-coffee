@@ -1,4 +1,4 @@
-# OneDollar-CoffeeScript
+# OneDollar-CoffeeScript (NOT READY)
 
 Implementation of the [$1 Gesture Recognizer](http://depts.washington.edu/aimgroup/proj/dollar/), a two-dimensional template based gesture recognition, for [CoffeeScript](http://coffeescript.org/).
 
