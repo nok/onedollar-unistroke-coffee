@@ -13,11 +13,11 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 ## Usage
 
-Comming soon.
+Coming soon.
 
 ## Examples
 
-Comming soon.
+Coming soon.
 
 ## License
 
