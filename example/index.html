@@ -27,11 +27,13 @@
 <body>
   <canvas class="sketch" id="js-sketch" width="500px" height="500px"></canvas>
   <script>
+
+    var one = new OneDollar();
+
     // Processing.js / Canvas
     new Processing(document.getElementById('js-sketch'),function(p){
 
       // OneDollar
-      var one = new OneDollar();
 
       // Processing.js
       var candidate, draw, l, i;
