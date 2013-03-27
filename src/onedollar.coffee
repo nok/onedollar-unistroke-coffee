@@ -111,8 +111,10 @@ class window.OneDollar
     return @___rotateByValue points, theta, centroid
 
 
-  __scaleToSquare: (points) ->
+  __scaleToSquare: (points, box) ->
     console.log '__scaleToSquare'
+
+    
     return points
 
 
@@ -126,7 +128,6 @@ class window.OneDollar
   # rotate by value
   #
   ___rotateByValue: (points, radian, centroid) ->
-
     sin = Math.sin radian
     cos = Math.cos radian
 
