@@ -29,7 +29,7 @@ class window.OneDollar
   #
   learn: (name, points) ->
     if points.length > 0
-      points = this._transform points
+      points = @_transform points
       @templates[name] = points
 
 
@@ -38,33 +38,31 @@ class window.OneDollar
   #
   check: (points) ->
     if points.length > 0
-      points = this._transform points
+      points = @_transform points
       return points
 
 
   _transform: (points) ->
-    points = this.__convert points
-    points = this.__resample points
+    points = @__convert points
+    points = @__resample points
+    points = @__rotateToZero points
 
-    console.log points.length
-
-    # points = this.__rotateToZero points
-    # points = this.__scaleToSquare points
-    # points = this.__translateToOrigin points
+    # points = @__scaleToSquare points
+    # points = @__translateToOrigin points
     return points
 
 
   __convert: (points) ->
     vectors = []
-    for p in points
-      vectors.push new Vector p[0], p[1]
+    for point in points
+      vectors.push new Vector point[0], point[1]
     return vectors
 
 
   __resample: (points) ->
     console.log '__resample'
 
-    seperator = (this.___length points)/(@fragmentation-1)
+    seperator = (@___length points)/(@fragmentation-1)
     distance = 0
     result = []
 
@@ -107,7 +105,10 @@ class window.OneDollar
     
   __rotateToZero: (points) ->
     console.log '__rotateToZero'
-    return points
+
+    centroid = @___centroid points
+    theta = Math.atan2 centroid.y-points[0].y, centroid.x-points[0].x
+    return @___rotateByValue points, theta, centroid
 
 
   __scaleToSquare: (points) ->
@@ -118,6 +119,22 @@ class window.OneDollar
 
   __translateToOrigin: (points) ->
     console.log '__translateToOrigin'
+    return points
+
+
+  #
+  # rotate by value
+  #
+  ___rotateByValue: (points, radian, centroid) ->
+
+    sin = Math.sin radian
+    cos = Math.cos radian
+
+    for point, i in points
+      x = (point.x-centroid.x)*cos-(point.y-centroid.y)*sin+centroid.x
+      y = (point.x-centroid.x)*sin+(point.y-centroid.y)*cos+centroid.y
+      points[i] = new Vector x, y
+
     return points
 
 
