@@ -1,11 +1,10 @@
 class window.OneDollar
 
-
   class Vector
     constructor: (@x=0.0, @y=0.0) ->
 
     dist: (vector) ->
-      return Math.sqrt( Math.pow((vector.x-@x),2) + Math.pow((vector.y-@y),2) )
+      return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
 
     add: (vector) ->
       @x += vector.x
@@ -65,79 +64,45 @@ class window.OneDollar
   __resample: (points) ->
     console.log '__resample'
 
-    seperator = (this.___length points) / (@fragmentation-1)
-
-    console.log (@fragmentation-1)
-    console.log seperator
-
-    distance = 0.0
-    # path = [points[0]]
-
-    # for i in [1...points.length]
-
-    #   space = points[i-1].dist points[i]
-
-    #   console.log 'space', space, '(distance+space)', (distance+space), 'seperator', seperator
-
-    #   if ((distance+space) >= seperator)
-
-
-    #     x = (points[i-1].x+((seperator-distance)/space)*(points[i].x-points[i-1].x))
-    #     y = (points[i-1].y+((seperator-distance)/space)*(points[i].y-points[i-1].y))
-
-    #     point = new Vector(x,y)
-
-    #     console.log point
-
-    #     path[path.length] = point
-    #     points.splice i, 0, point
-    #     distance = 0.0
-    #   else
-    #     distance += space
-    
-
-
-    # if path.length is (@fragmentation-1)
-    #   path[path] = points[points.length-1]
-
-    # return path
-
-    path = []
+    seperator = (this.___length points)/(@fragmentation-1)
+    distance = 0
+    result = []
 
     while points.length isnt 0
+      prev = points.pop()
 
-      pp = points.pop()
-
-      if path.length is 0
-        path.push pp
+      # handle the fix first point
+      if result.length is 0
+        result.push prev
       else
 
+        # handle the fix last point
         if points.length is 0
-          path.push pp
-          return path
+          result.push prev
+          break
 
-        p = points[points.length-1]
-        space = pp.dist p
-
-        console.log 'space', space
-
-        console.log 'points.length', points.length, 'distance', distance, 'space', space, 'distance+space', (distance+space), 'seperator', seperator
+        point = points[points.length-1]
+        space = prev.dist point
 
         if ((distance+space) >= seperator)
-
-          vector = new Vector(pp.x+((seperator-distance)/space)*(p.x-pp.x), pp.y+((seperator-distance)/space)*(p.y-pp.y))
-          path.push vector
-
+          vector = new Vector(prev.x+((seperator-distance)/space)*(point.x-prev.x), prev.y+((seperator-distance)/space)*(point.y-prev.y))
+          result.push vector
           points.push vector
           distance = 0
 
-          if path.length is (@fragmentation-1)
-            path.push points[points.length-1]
-            return path
+          if result.length is (@fragmentation-1)
+            result.push points[points.length-1]
+            break
+
         else
           distance += space
 
-    return path
+    if result.length isnt @fragmentation
+      point = result[result.length-1]
+      for i in [result.length...@fragmentation]
+        result.push point
+
+    return result
 
     
   __rotateToZero: (points) ->
@@ -173,18 +138,17 @@ class window.OneDollar
   # calculate the length of a path
   #
   ___length: (points) ->
-    length = 0
+    length = 0.0
     tmp = null
 
     for p in points
+
+      console.log p.x, p.y
+
       if tmp isnt null
         length += p.dist tmp
       tmp = p
 
+    console.log '=', length
+
     return length
-
-
-  #
-  # helpers
-  #
-  typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
