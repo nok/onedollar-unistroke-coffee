@@ -1,0 +1,1 @@
+coffee --watch --output ../lib/ ../src/
