@@ -1,5 +1,6 @@
 class window.OneDollar
 
+
   class Vector
     constructor: (@x=0.0, @y=0.0) ->
 
@@ -42,16 +43,21 @@ class window.OneDollar
       return points
 
 
+  #
+  # transform the move
+  #
   _transform: (points) ->
     points = @__convert points
     points = @__resample points
-    points = @__rotateToZero points
-
-    # points = @__scaleToSquare points
-    # points = @__translateToOrigin points
+    points = @__rotate points
+    points = @__scale points
+    points = @__translate points
     return points
 
 
+  #
+  # convert arrays to objects
+  #
   __convert: (points) ->
     vectors = []
     for point in points
@@ -59,6 +65,9 @@ class window.OneDollar
     return vectors
 
 
+  #
+  # resample the points
+  #
   __resample: (points) ->
     console.log '__resample'
 
@@ -102,39 +111,63 @@ class window.OneDollar
 
     return result
 
-    
-  __rotateToZero: (points) ->
-    console.log '__rotateToZero'
+
+  #
+  # rotate the points
+  #
+  __rotate: (points) ->
+    console.log '__rotate'
 
     centroid = @___centroid points
     theta = Math.atan2 centroid.y-points[0].y, centroid.x-points[0].x
-    return @___rotateByValue points, theta, centroid
 
-
-  __scaleToSquare: (points, box) ->
-    console.log '__scaleToSquare'
-
-    
-    return points
-
-
-
-  __translateToOrigin: (points) ->
-    console.log '__translateToOrigin'
-    return points
-
-
-  #
-  # rotate by value
-  #
-  ___rotateByValue: (points, radian, centroid) ->
-    sin = Math.sin radian
-    cos = Math.cos radian
+    sin = Math.sin theta
+    cos = Math.cos theta
 
     for point, i in points
       x = (point.x-centroid.x)*cos-(point.y-centroid.y)*sin+centroid.x
       y = (point.x-centroid.x)*sin+(point.y-centroid.y)*cos+centroid.y
       points[i] = new Vector x, y
+
+    return points
+
+
+  #
+  # scale the points to the bounding box
+  #
+  __scale: (points) ->
+    console.log '__scale'
+
+    # bounding box
+    maxX = maxY = -Infinity
+    minX = minY = +Infinity
+    for point in points
+      minX = Math.min point.x, minX
+      maxX = Math.max point.x, maxX
+      minY = Math.min point.y, minY
+      maxY = Math.max point.y, maxY
+    width = maxX-minX
+    height = maxY-minY
+
+    # scale
+    for point, i in points
+      x = point.x * @size / width
+      y = point.y * @size / height
+      points[i] = new Vector x, y
+
+    return points
+
+
+  #
+  # translate the points to the origin
+  #
+  __translate: (points) ->
+    console.log '__translate'
+    
+    centroid = @___centroid points
+    for point in points
+      point.x -= centroid.x
+      point.y -= centroid.y
 
     return points
 
@@ -170,3 +203,4 @@ class window.OneDollar
     console.log '=', length
 
     return length
+
