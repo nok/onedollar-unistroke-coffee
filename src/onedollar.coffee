@@ -1,5 +1,6 @@
-class window.OneDollar
+"use strict"
 
+class window.OneDollar
 
   class Vector
     constructor: (@x=0.0, @y=0.0) ->
