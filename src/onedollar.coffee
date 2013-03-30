@@ -2,21 +2,48 @@
 
 class window.OneDollar
 
+
+
   class Vector
+
     constructor: (@x=0.0, @y=0.0) ->
 
     dist: (vector) ->
       return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
 
-    add: (vector) ->
-      @x += vector.x
-      @y += vector.y
-      return this
+    add: (value) ->
+      if value instanceof Vector
+        @x += value.x
+        @y += value.y
+      else
+        @x += value
+        @y += value
+      return @
 
-    div: (number) ->
-      @x /= number
-      @y /= number
-      return this
+    div: (value) ->
+      if value instanceof Vector
+        @x /= value.x
+        @y /= value.y
+      else
+        @x /= value
+        @y /= value
+      return @
+
+    mult: (value) ->
+      if value instanceof Vector
+        @x *= value.x
+        @y *= value.y
+      else
+        @x *= value
+        @y *= value
+      return @
+
+
+
+  class Result
+
+    constructor: (@name='', @percent=0.0) ->
+
 
 
   constructor: (@fragmentation=64, @size=250, @angle=45, @step=3) ->
@@ -30,49 +57,61 @@ class window.OneDollar
   # 'learn' new gestures
   #
   learn: (name, points) ->
+
     if points.length > 0
-      points = @_transform points
-      @templates[name] = points
+      @templates[name] = @_transform points
+
+    return @
 
 
   #
   # run the recognizer
   #
   check: (points) ->
+
     if points.length > 0
       points = @_transform points
-      return points
+    else
+      return 
 
+    result = @__equality points
 
-  #
-  # transform the move
-  #
-  _transform: (points) ->
-    points = @__convert points
-    points = @__resample points
-    points = @__rotate points
-    points = @__scale points
-    points = @__translate points
     return points
 
 
   #
-  # convert arrays to objects
+  # transform the points of the move
   #
-  __convert: (points) ->
-    vectors = []
+  _transform: (points) ->
+
+    points = @__convertToVectors points
+    points = @__resample points
+    points = @__rotateToZero points
+    points = @__scaleToSquare points
+    points = @__translateToOrigin points
+
+    return points
+
+
+  #
+  # convert arrays to vectors
+  #
+  __convertToVectors: (points) ->
+
+    result = []
+
     for point in points
-      vectors.push new Vector point[0], point[1]
-    return vectors
+      result.push new Vector point[0], point[1]
+
+    return result
 
 
   #
   # resample the points
   #
   __resample: (points) ->
-    console.log '__resample'
 
-    seperator = (@___length points)/(@fragmentation-1)
+    seperator = (@___distance points)/(@fragmentation-1)
     distance = 0
     result = []
 
@@ -116,60 +155,47 @@ class window.OneDollar
   #
   # rotate the points
   #
-  __rotate: (points) ->
-    console.log '__rotate'
+  __rotateToZero: (points) ->
 
     centroid = @___centroid points
     theta = Math.atan2 centroid.y-points[0].y, centroid.x-points[0].x
 
-    sin = Math.sin theta
-    cos = Math.cos theta
-
-    for point, i in points
-      x = (point.x-centroid.x)*cos-(point.y-centroid.y)*sin+centroid.x
-      y = (point.x-centroid.x)*sin+(point.y-centroid.y)*cos+centroid.y
-      points[i] = new Vector x, y
-
-    return points
+    return @___rotate points, -theta, centroid
 
 
   #
   # scale the points to the bounding box
   #
-  __scale: (points) ->
-    console.log '__scale'
+  __scaleToSquare: (points) ->
 
-    # bounding box
     maxX = maxY = -Infinity
     minX = minY = +Infinity
+    
     for point in points
       minX = Math.min point.x, minX
       maxX = Math.max point.x, maxX
       minY = Math.min point.y, minY
       maxY = Math.max point.y, maxY
-    width = maxX-minX
-    height = maxY-minY
-
-    # scale
-    for point, i in points
-      x = point.x * @size / width
-      y = point.y * @size / height
-      points[i] = new Vector x, y
-
-    return points
-
-
-  #
-  # translate the points to the origin
-  #
-  __translate: (points) ->
-    console.log '__translate'
     
-    centroid = @___centroid points
-    for point in points
-      point.x -= centroid.x
-      point.y -= centroid.y
+    return @___scale points, new Vector(@size/(maxX-minX), @size/(maxY-minY))
 
+
+  #
+  # translate the points to origin
+  #
+  __translateToOrigin: (points) ->
+
+    centroid = @___centroid points
+    return @___translate points, centroid.mult -1
+
+
+  #
+  # calculate the best equality between candidate and templates
+  #
+  __equality: (points) ->
+    for name, template of @templates
+      for point in template
+        console.log point
     return points
 
 
@@ -178,30 +204,71 @@ class window.OneDollar
   #
   ___centroid: (points) ->
     centroid = new Vector
-
     for p in points
       centroid.add p
     centroid.div points.length
-
     return centroid
 
 
   #
   # calculate the length of a path
   #
-  ___length: (points) ->
+  ___distance: (points) ->
     length = 0.0
     tmp = null
-
     for p in points
-
-      console.log p.x, p.y
-
       if tmp isnt null
         length += p.dist tmp
       tmp = p
-
-    console.log '=', length
-
     return length
 
+
+  #
+  # calculate the difference between two paths
+  #
+  ___difference: (template, candidate) ->
+    distance = 0.0
+    for point, i in template
+      distance += point.dist candidate[i]
+    return distance/template.length
+
+
+  #
+  # translation
+  #
+  ___translate: (points, offset) ->
+    for point in points
+      point.add offset
+    return points
+
+
+  #
+  # scaling
+  #
+  ___scale: (points, offset) ->
+    for point in points
+      point.mult offset.x
+    return points
+
+
+  #
+  # rotation
+  #
+  ___rotate: (points, radians, pivot) ->
+
+    sin = Math.sin radians
+    cos = Math.cos radians
+
+    for point, i in points
+      x = (point.x-pivot.x)*cos - (point.y-pivot.y)*sin + pivot.x
+      y = (point.x-pivot.x)*sin + (point.y-pivot.y)*cos + pivot.y
+      points[i] = new Vector x, y
+
+    return points
+
+
+  #
+  # convert degrees to radians
+  #
+  ___radians: (degrees) ->
+    return degrees * Math.PI / 180.0
