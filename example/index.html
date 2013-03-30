@@ -33,12 +33,11 @@
     // Processing.js / Canvas
     new Processing(document.getElementById('js-sketch'),function(p){
 
-      // OneDollar
-
       // Processing.js
       var candidate, draw, length, index;
 
-      var btw = null;
+      // OneDollar
+      var result = null;
 
       p.setup = function(){
         p.size(500, 500);
@@ -66,14 +65,6 @@
           p.endShape();
         }
 
-        if(btw!==null){
-          p.beginShape();
-          for (var l=btw.length, i=0; i<l; i++) {
-              p.vertex(btw[i].x+250, btw[i].y+250); // for development
-          }
-          p.endShape();
-        }
-
       };
 
       p.mousePressed = function(){
@@ -85,8 +76,13 @@
       };
 
       p.mouseReleased = function(){
-        btw = one.check(candidate);
-        console.log(btw);
+        
+        // OneDollar
+        result = one.check(candidate);
+        if(result!==false){
+          console.log(result);
+        }
+
         draw = false;
         candidate = [];
       };

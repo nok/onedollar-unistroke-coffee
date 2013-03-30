@@ -42,15 +42,16 @@ class window.OneDollar
 
   class Result
 
-    constructor: (@name='', @percent=0.0) ->
+    constructor: (@name='', @score=0.0) ->
 
 
 
-  constructor: (@fragmentation=64, @size=250, @angle=45, @step=3) ->
+  constructor: (@fragmentation=64, @size=250, @angle=45, @step=2) ->
 
-    @PI = Math.PI
-    @HALFDIAGONAL = 0.5*Math.sqrt(@size*@size+@size*@size)
-    @templates = {}
+    @PI             = Math.PI
+    @PHI            = 0.5 * (-1.0+Math.sqrt(5.0))
+    @HALFDIAGONAL   = 0.5 * Math.sqrt(@size*@size + @size*@size)
+    @templates      = {}
 
 
   #
@@ -72,23 +73,36 @@ class window.OneDollar
     if points.length > 0
       points = @_transform points
     else
-      return 
+      return false
 
-    result = @__equality points
+    difference = +Infinity
+    template = null
 
-    return points
+    for name, template_points of @templates
+      space = @__find_best_template points, template_points
+      if space < difference
+        difference = space
+        template = name
+        
+    if template isnt null
+      score = Math.floor( (1.0 - difference / @HALFDIAGONAL)*100 )
+      # console.log 'template ', template, ' score', score
+      # return points
+      return new Result template, score
+
+    return false
 
 
   #
-  # transform the points of the move
+  # transform the points
   #
   _transform: (points) ->
 
-    points = @__convertToVectors points
+    points = @__convert points
     points = @__resample points
-    points = @__rotateToZero points
-    points = @__scaleToSquare points
-    points = @__translateToOrigin points
+    points = @__rotate_to_zero points
+    points = @__scale_to_square points
+    points = @__translate_to_origin points
 
     return points
 
@@ -96,7 +110,7 @@ class window.OneDollar
   #
   # convert arrays to vectors
   #
-  __convertToVectors: (points) ->
+  __convert: (points) ->
 
     result = []
 
@@ -111,7 +125,7 @@ class window.OneDollar
   #
   __resample: (points) ->
 
-    seperator = (@___distance points)/(@fragmentation-1)
+    seperator = (@___get_length points) / (@fragmentation-1)
     distance = 0
     result = []
 
@@ -155,9 +169,9 @@ class window.OneDollar
   #
   # rotate the points
   #
-  __rotateToZero: (points) ->
+  __rotate_to_zero: (points) ->
 
-    centroid = @___centroid points
+    centroid = @___get_centroid points
     theta = Math.atan2 centroid.y-points[0].y, centroid.x-points[0].x
 
     return @___rotate points, -theta, centroid
@@ -166,7 +180,7 @@ class window.OneDollar
   #
   # scale the points to the bounding box
   #
-  __scaleToSquare: (points) ->
+  __scale_to_square: (points) ->
 
     maxX = maxY = -Infinity
     minX = minY = +Infinity
@@ -183,26 +197,49 @@ class window.OneDollar
   #
   # translate the points to origin
   #
-  __translateToOrigin: (points) ->
+  __translate_to_origin: (points) ->
 
-    centroid = @___centroid points
+    centroid = @___get_centroid points
     return @___translate points, centroid.mult -1
 
 
   #
-  # calculate the best equality between candidate and templates
+  # find the best template
   #
-  __equality: (points) ->
-    for name, template of @templates
-      for point in template
-        console.log point
-    return points
+  __find_best_template: (points, template_points) ->
+
+    a = @___radians -@angle
+    b = @___radians @angle
+    treshold = @___radians @step
+
+    c = (1.0-@PHI)*b + @PHI*a
+    d = (1.0-@PHI)*a + (@PHI*b)
+
+    path_a = @___get_difference_at_angle points, template_points, c
+    path_b = @___get_difference_at_angle points, template_points, d
+
+    if path_a isnt +Infinity and path_b isnt +Infinity
+      while Math.abs(b-a)>treshold
+        if path_a < path_b
+          b = d
+          d = c
+          path_b = path_a
+          c = @PHI*a + (1.0-@PHI)*b
+          path_a = @___get_difference_at_angle points, template_points, c
+        else
+          a = c
+          c = d
+          path_a = path_b
+          d = @PHI*b + (1.0-@PHI)*a
+          path_b = @___get_difference_at_angle points, template_points, d
+      return Math.min path_a, path_b
+    return +Infinity
 
 
   #
   # calculate the centroid of a path
   #
-  ___centroid: (points) ->
+  ___get_centroid: (points) ->
     centroid = new Vector
     for p in points
       centroid.add p
@@ -213,32 +250,50 @@ class window.OneDollar
   #
   # calculate the length of a path
   #
-  ___distance: (points) ->
+  ___get_length: (points) ->
+
     length = 0.0
     tmp = null
+
     for p in points
       if tmp isnt null
         length += p.dist tmp
       tmp = p
+
     return length
+
+
+  #
+  # calculate the difference between two paths at a specific angle
+  #  
+  ___get_difference_at_angle: (points, template_points, radians) ->
+
+    centroid = @___get_centroid points
+    points = @___rotate points, radians, centroid
+
+    return @___get_difference points, template_points
 
 
   #
   # calculate the difference between two paths
   #
-  ___difference: (template, candidate) ->
+  ___get_difference: (template, candidate) ->
+
     distance = 0.0
     for point, i in template
       distance += point.dist candidate[i]
-    return distance/template.length
+
+    return distance / template.length
 
 
   #
   # translation
   #
   ___translate: (points, offset) ->
+
     for point in points
       point.add offset
+
     return points
 
 
@@ -246,8 +301,10 @@ class window.OneDollar
   # scaling
   #
   ___scale: (points, offset) ->
+
     for point in points
       point.mult offset
+
     return points
 
 
@@ -271,4 +328,5 @@ class window.OneDollar
   # convert degrees to radians
   #
   ___radians: (degrees) ->
+
     return degrees * Math.PI / 180.0
