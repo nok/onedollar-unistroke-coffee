@@ -177,7 +177,7 @@ class window.OneDollar
       minY = Math.min point.y, minY
       maxY = Math.max point.y, maxY
     
-    return @___scale points, new Vector(@size/(maxX-minX), @size/(maxY-minY))
+    return @___scale points, new Vector @size/(maxX-minX), @size/(maxY-minY)
 
 
   #
@@ -247,7 +247,7 @@ class window.OneDollar
   #
   ___scale: (points, offset) ->
     for point in points
-      point.mult offset.x
+      point.mult offset
     return points
 
 
