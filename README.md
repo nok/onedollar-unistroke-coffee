@@ -1,6 +1,7 @@
-# OneDollar-CoffeeScript (NOT READY)
+# OneDollar-CoffeeScript
 
 Implementation of the [$1 Gesture Recognizer](http://depts.washington.edu/aimgroup/proj/dollar/), a two-dimensional template based gesture recognition, for [CoffeeScript](http://coffeescript.org/).
+
 
 ## About
 
@@ -13,11 +14,24 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 ## Usage
 
-Coming soon.
+```javascript
+var one = new OneDollar();
 
-## Examples
+one.add('triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]);
+one.add('circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]);
+// one.remove('circle');
 
-Coming soon.
+one.on('triangle', function(result){
+	console.log(result);
+});
+one.on('circle', function(result){
+	console.log(result);
+});
+// one.off('circle');
+
+one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
+
+```
 
 ## License
 
