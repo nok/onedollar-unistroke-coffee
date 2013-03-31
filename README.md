@@ -30,7 +30,6 @@ one.on('circle', function(result){
 // one.off('circle');
 
 one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
-
 ```
 
 ## License
