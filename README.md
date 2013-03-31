@@ -1,6 +1,6 @@
 # OneDollar-CoffeeScript
 
-Implementation of the [$1 Gesture Recognizer](http://depts.washington.edu/aimgroup/proj/dollar/), a two-dimensional template based gesture recognition, for [CoffeeScript](http://coffeescript.org/).
+Implementation of the [$1 Gesture Recognizer](http://depts.washington.edu/aimgroup/proj/dollar/), a two-dimensional template based gesture recognition, for [jQuery](http://jquery.com/).
 
 
 ## About
@@ -59,7 +59,7 @@ $('#element').onedollar([
 ]);
 ```
 
-I recommend you to use [Modernizr](https://github.com/Modernizr/Modernizr) and  [RequireJS](https://github.com/jrburke/requirejs):
+I recommend you to use it with [Modernizr](https://github.com/Modernizr/Modernizr) and [RequireJS](https://github.com/jrburke/requirejs):
 
 ```javascript
 if(Modernizr.touch===true){
