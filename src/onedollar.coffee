@@ -1,3 +1,21 @@
+# The library is Open Source Software released under the MIT License.
+# It's developed by Darius Morawiec. 2013-2014
+# 
+# https://github.com/voidplus/onedollar-coffeescript
+#
+# ---
+#
+# The $1 Gesture Recognizer is a research project by Wobbrock, Wilson and Li of
+# the University of Washington and Microsoft Research. It describes a simple
+# algorithm for accurate and fast recognition of drawn gestures.
+#  
+# Gestures can be recognised at any position, scale, and under any rotation.
+# The system requires little training, achieving a 97% recognition rate with
+# only one template for each gesture.
+# 
+# http://depts.washington.edu/aimgroup/proj/dollar/
+
+
 "use strict"
 
 class window.OneDollar

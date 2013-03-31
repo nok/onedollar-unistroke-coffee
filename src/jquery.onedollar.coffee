@@ -1,3 +1,8 @@
+# The library is Open Source Software released under the MIT License.
+# It's developed by Darius Morawiec. 2013-2014
+# 
+# https://github.com/voidplus/onedollar-coffeescript
+
 $ = jQuery
 
 $.fn.extend
