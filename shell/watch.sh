@@ -1,1 +1,1 @@
-coffee --watch --output ../lib/ ../src/
+coffee --watch --output ./../lib/ ./../src/

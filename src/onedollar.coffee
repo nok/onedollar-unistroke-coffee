@@ -39,7 +39,10 @@ class window.OneDollar
       return @
 
 
-  constructor: (parts=64, size=250, angle=45, step=2) ->
+  constructor: (score=80, parts=64, size=250, angle=45, step=2) ->
+
+    @config =
+      score:        score
 
     @MATH =
       PHI:          0.5 * (-1.0+Math.sqrt(5.0))
@@ -124,9 +127,11 @@ class window.OneDollar
         name:   template
         score:  ((1.0 - difference / @MATH.HALFDIAGONAL)*100).toFixed(2)
 
-      @binds[template].apply @, [args]
+      if args.score >= @config.score
 
-      return args
+        @binds[template].apply @, [args]
+
+        return args
 
     return false
 
