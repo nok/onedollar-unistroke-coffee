@@ -14,6 +14,8 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 ## Usage
 
+### Plain-JavaScript
+
 ```html
 <script src="onedollar.js"></script>	
 ```
@@ -34,6 +36,37 @@ one.on('circle', function(result){
 // one.off('circle');
 
 one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
+```
+
+### jQuery
+
+The plugin works only with *touchstart*, *touchmove* and *touchend* events, so mobile touch devices.
+
+```html
+<script src="jquery.min.js"></script>
+<script src="onedollar.js"></script>
+<script src="jquery.onedollar.js"></script>
+```
+
+```javascript
+$('#element').onedollar([
+	['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ], function(result){
+		alert('circle');
+	}],
+	['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ], function(result){
+		alert('triangle');
+	}]
+]);
+```
+
+I recommend you to use [Modernizr](https://github.com/Modernizr/Modernizr) and  [RequireJS](https://github.com/jrburke/requirejs):
+
+```javascript
+if(Modernizr.touch===true){
+	require(["jquery.min.js", "onedollar.min.js", "jquery.onedollar.min.js"], function($){
+		$('#element').onedollar( /* ... */ );
+	}
+}
 ```
 
 ## License
