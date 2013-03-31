@@ -16,13 +16,9 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 ### JavaScript
 
-HTML
-
 ```html
 <script src="onedollar.js"></script>	
 ```
-
-JavaScript
 
 ```javascript
 var one = new OneDollar();
@@ -44,21 +40,15 @@ one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 
 ### jQuery
 
-HTML
-
 ```html
 <script src="jquery.min.js"></script>
 <script src="onedollar.js"></script>
 <script src="onedollar.jquery.js"></script>
 ```
 
-JavaScript
-
 ```javascript
 $(document).ready(function() {
-
 	$('#js-sketch').onedollar();
-	
 });
 ```
 
