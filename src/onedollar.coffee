@@ -39,28 +39,61 @@ class window.OneDollar
       return @
 
 
+  constructor: (parts=64, size=250, angle=45, step=2) ->
 
-  class Result
+    @MATH =
+      PHI:          0.5 * (-1.0+Math.sqrt(5.0))
+      HALFDIAGONAL: 0.5 * Math.sqrt(size*size + size*size)
 
-    constructor: (@name='', @score=0.0) ->
+    @ALGO =
+      parts:  parts
+      size:   size
+      angle:  angle
+      step:   step
 
-
-
-  constructor: (@fragmentation=64, @size=250, @angle=45, @step=2) ->
-
-    @PI             = Math.PI
-    @PHI            = 0.5 * (-1.0+Math.sqrt(5.0))
-    @HALFDIAGONAL   = 0.5 * Math.sqrt(@size*@size + @size*@size)
-    @templates      = {}
+    @temps = {}
+    @binds = {}
 
 
   #
-  # 'learn' new gestures
+  # add new template gesture
   #
-  learn: (name, points) ->
+  add: (name, points) ->
 
     if points.length > 0
-      @templates[name] = @_transform points
+      @temps[name] = @_transform points
+
+    return @
+
+
+  #
+  # remove template gesture
+  #
+  remove: (name) ->
+
+    if @temps[name] isnt undefined
+      delete @temps[name]
+
+    return @
+
+
+  #
+  # add defined callbacks
+  #
+  on: (name, fn) ->
+
+    @binds[name] = fn
+
+    return @
+
+
+  #
+  # remove defined callbacks
+  #
+  off: (name) ->
+
+    if @binds[name] isnt undefined
+      delete @binds[name]
 
     return @
 
@@ -78,17 +111,22 @@ class window.OneDollar
     difference = +Infinity
     template = null
 
-    for name, template_points of @templates
-      space = @__find_best_template points, template_points
-      if space < difference
-        difference = space
-        template = name
+    for name, template_points of @temps
+      if @binds[name] isnt undefined
+        space = @__find_best_template points, template_points
+        if space < difference
+          difference = space
+          template = name
         
     if template isnt null
-      score = Math.floor( (1.0 - difference / @HALFDIAGONAL)*100 )
-      # console.log 'template ', template, ' score', score
-      # return points
-      return new Result template, score
+
+      args =
+        name:   template
+        score:  ((1.0 - difference / @MATH.HALFDIAGONAL)*100).toFixed(2)
+
+      @binds[template].apply @, [args]
+
+      return args
 
     return false
 
@@ -125,7 +163,7 @@ class window.OneDollar
   #
   __resample: (points) ->
 
-    seperator = (@___get_length points) / (@fragmentation-1)
+    seperator = (@___get_length points) / (@ALGO.parts-1)
     distance = 0
     result = []
 
@@ -151,16 +189,16 @@ class window.OneDollar
           points.push vector
           distance = 0
 
-          if result.length is (@fragmentation-1)
+          if result.length is (@ALGO.parts-1)
             result.push points[points.length-1]
             break
 
         else
           distance += space
 
-    if result.length isnt @fragmentation
+    if result.length isnt @ALGO.parts
       point = result[result.length-1]
-      for i in [result.length...@fragmentation]
+      for i in [result.length...@ALGO.parts]
         result.push point
 
     return result
@@ -191,7 +229,7 @@ class window.OneDollar
       minY = Math.min point.y, minY
       maxY = Math.max point.y, maxY
     
-    return @___scale points, new Vector @size/(maxX-minX), @size/(maxY-minY)
+    return @___scale points, new Vector @ALGO.size/(maxX-minX), @ALGO.size/(maxY-minY)
 
 
   #
@@ -208,12 +246,12 @@ class window.OneDollar
   #
   __find_best_template: (points, template_points) ->
 
-    a = @___radians -@angle
-    b = @___radians @angle
-    treshold = @___radians @step
+    a = @___radians -@ALGO.angle
+    b = @___radians @ALGO.angle
+    treshold = @___radians @ALGO.step
 
-    c = (1.0-@PHI)*b + @PHI*a
-    d = (1.0-@PHI)*a + (@PHI*b)
+    c = (1.0-@MATH.PHI)*b + @MATH.PHI*a
+    d = (1.0-@MATH.PHI)*a + (@MATH.PHI*b)
 
     path_a = @___get_difference_at_angle points, template_points, c
     path_b = @___get_difference_at_angle points, template_points, d
@@ -224,13 +262,13 @@ class window.OneDollar
           b = d
           d = c
           path_b = path_a
-          c = @PHI*a + (1.0-@PHI)*b
+          c = @MATH.PHI*a + (1.0-@MATH.PHI)*b
           path_a = @___get_difference_at_angle points, template_points, c
         else
           a = c
           c = d
           path_a = path_b
-          d = @PHI*b + (1.0-@PHI)*a
+          d = @MATH.PHI*b + (1.0-@MATH.PHI)*a
           path_b = @___get_difference_at_angle points, template_points, d
       return Math.min path_a, path_b
     return +Infinity
