@@ -40,7 +40,7 @@ one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 
 ### jQuery
 
-The plugin works only with *touchstart*, *touchmove* and *touchend* events, so mobile touch devices.
+The plugin works only with *touchstart*, *touchmove* and *touchend* events, so mobile **touch** devices.
 
 ```html
 <script src="jquery.min.js"></script>
@@ -59,6 +59,8 @@ $('#element').onedollar([
 ]);
 ```
 
+### Feature-Detection
+
 I recommend you to use it with [Modernizr](https://github.com/Modernizr/Modernizr) and [RequireJS](https://github.com/jrburke/requirejs):
 
 ```javascript
@@ -67,6 +69,18 @@ if(Modernizr.touch===true){
 		$('#element').onedollar( /* ... */ );
 	}
 }
+```
+
+Or with just [Modernizr](https://github.com/Modernizr/Modernizr) and [yepnope.js](https://github.com/SlexAxton/yepnope.js):
+
+```javascript
+Modernizr.load({
+	test: Modernizr.touch,
+	yep : ["onedollar.min.js", "jquery.onedollar.min.js"],
+	complete: function (){
+		$('#element').onedollar( /* ... */ );
+	}
+});
 ```
 
 ## License
