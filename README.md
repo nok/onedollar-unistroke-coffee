@@ -28,10 +28,10 @@ one.add('circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]);
 // one.remove('circle');
 
 one.on('triangle', function(result){
-	console.log(result);
+	alert(result.name+' ('+result.score+'%)');
 });
 one.on('circle', function(result){
-	console.log(result);
+	alert(result.name+' ('+result.score+'%)');
 });
 // one.off('circle');
 
@@ -51,10 +51,10 @@ The plugin works only with *touchstart*, *touchmove* and *touchend* events, so m
 ```javascript
 $('#element').onedollar([
 	['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ], function(result){
-		alert('circle');
+		alert(result.name+' ('+result.score+'%)');
 	}],
 	['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ], function(result){
-		alert('triangle');
+		alert(result.name+' ('+result.score+'%)');
 	}]
 ]);
 ```
