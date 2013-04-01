@@ -125,6 +125,8 @@ class window.OneDollar
   #
   check: (points) ->
 
+    raw = points
+
     if points.length > 0
       points = @_transform points
     else
@@ -142,11 +144,17 @@ class window.OneDollar
         
     if template isnt null
 
-      args =
-        name:   template
-        score:  ((1.0 - difference / @MATH.HALFDIAGONAL)*100).toFixed(2)
+      score = parseFloat(((1.0 - difference / @MATH.HALFDIAGONAL)*100).toFixed(2))
 
-      if args.score >= @config.score
+      if score >= @config.score
+
+        args =
+          name:   template
+          score:  score
+          path:
+            start: new Vector raw[0][0], raw[0][1]
+            end: new Vector raw[raw.length-1][0], raw[raw.length-1][1]
+            centroid: @___get_centroid @__convert raw
 
         @binds[template].apply @, [args]
 

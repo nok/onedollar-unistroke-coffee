@@ -21,12 +21,10 @@
 
       $('#js-sketch').onedollar([
         ['circle', circle, function(result){
-          console.log(result);
-          alert('circle');
+          alert(result.name+' ('+result.score+'%)');
         }],
         ['triangle', triangle, function(result){
-          console.log(result);
-          alert('triangle');
+          alert(result.name+' ('+result.score+'%)');
         }]
       ]);
 

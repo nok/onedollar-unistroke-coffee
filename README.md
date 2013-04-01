@@ -59,6 +59,29 @@ $('#element').onedollar([
 ]);
 ```
 
+### Result
+
+```json
+{
+	name: "triangle",		# name of template
+	score: 84.21,			# percent of equality
+	path: {
+		start: {			# first point of the path
+			x: 220,
+			y: 184
+		},
+		end: {				# last point of the path
+			x: 241,
+			y: 211
+		},
+		centroid: {			# central point of the path
+			x: 235,
+			y: 269
+		}
+	}
+}
+```
+
 ### Feature-Detection
 
 I recommend you to use it with [Modernizr](https://github.com/Modernizr/Modernizr) and [RequireJS](https://github.com/jrburke/requirejs):
