@@ -58,6 +58,8 @@ class window.OneDollar
 
   constructor: (score=80, parts=64, size=250, angle=45, step=2) ->
 
+    @VERSION = "1.0.0"
+
     @config =
       score:        score
 
