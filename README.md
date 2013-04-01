@@ -61,7 +61,7 @@ $('#element').onedollar([
 
 ### Result
 
-```json
+```
 {
 	name: "triangle",		// name of template
 	score: 84.21,			// percent of equality
