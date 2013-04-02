@@ -1,0 +1,14 @@
+{
+  "name"          : "OneDollar.js",
+  "version"       : "1.0.0",
+  "main": [
+    "lib/onedollar.js",
+    "lib/onedollar.min.js",
+    "lib/jquery.onedollar.js",
+    "lib/jquery.onedollar.min.js"
+  ],
+  "ignore": [
+    "shell/",
+    ".gitignore"
+  ]
+}
