@@ -132,29 +132,38 @@ class window.OneDollar
     else
       return false
 
-    difference = +Infinity
+    equality = +Infinity
     template = null
+    ranking = []
 
     for name, template_points of @temps
       if @binds[name] isnt undefined
         space = @__find_best_template points, template_points
-        if space < difference
-          difference = space
+
+        if space < equality
+          equality = space
           template = name
+
+        ranking.push {
+          name: name
+          score: parseFloat(((1.0 - space / @MATH.HALFDIAGONAL)*100).toFixed(2))
+        }
         
     if template isnt null
 
-      score = parseFloat(((1.0 - difference / @MATH.HALFDIAGONAL)*100).toFixed(2))
+      ranking.sort (a,b) ->
+        return if a.score < b.score then 1 else -1
 
-      if score >= @config.score
+      if ranking[0].score >= @config.score
 
         args =
-          name:   template
-          score:  score
+          name:         ranking[0].name
+          score:        ranking[0].score
           path:
-            start: new Vector raw[0][0], raw[0][1]
-            end: new Vector raw[raw.length-1][0], raw[raw.length-1][1]
-            centroid: @___get_centroid @__convert raw
+            start:      new Vector raw[0][0], raw[0][1]
+            end:        new Vector raw[raw.length-1][0], raw[raw.length-1][1]
+            centroid:   @___get_centroid @__convert raw
+          ranking:      ranking
 
         @binds[template].apply @, [args]
 
