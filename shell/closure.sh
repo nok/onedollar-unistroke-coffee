@@ -1,2 +1,0 @@
-java -jar google_closure_compiler.jar --js=./../lib/onedollar.js --js_output_file=./../lib/onedollar.min.js --compilation_level=SIMPLE_OPTIMIZATIONS
-java -jar google_closure_compiler.jar --js=./../lib/jquery.onedollar.js --js_output_file=./../lib/jquery.onedollar.min.js --compilation_level=SIMPLE_OPTIMIZATIONS
