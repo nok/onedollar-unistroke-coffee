@@ -48,7 +48,7 @@ one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 
 ### jQuery
 
-The plugin works only with *touchstart*, *touchmove* and *touchend* events, so mobile **touch** devices.
+The plugin works only with *touchstart*, *touchmove* and *touchend* events, so [touch (caniuse.com)](http://caniuse.com/#feat=touch) devices.
 
 ```html
 <script src="jquery.min.js"></script>
