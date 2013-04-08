@@ -27,7 +27,7 @@ bower install onedollar
 <script src="onedollar.js"></script>	
 ```
 
-```
+```javascript
 var one = new OneDollar();
 
 one.add('triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]);
