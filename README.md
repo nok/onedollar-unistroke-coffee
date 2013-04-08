@@ -19,7 +19,6 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 bower install onedollar
 ```
 
-
 ## Usage
 
 ### Plain-JavaScript
@@ -48,7 +47,7 @@ one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 
 ### jQuery
 
-The plugin works only with *touchstart*, *touchmove* and *touchend* events, so [touch (caniuse.com)](http://caniuse.com/#feat=touch) devices.
+The plugin uses either [multitouch](http://caniuse.com/#feat=touch) or basic single mouse events.
 
 ```html
 <script src="jquery.min.js"></script>

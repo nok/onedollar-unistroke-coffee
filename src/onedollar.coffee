@@ -75,6 +75,7 @@ class window.OneDollar
 
     @temps = {}
     @binds = {}
+    @cands = []
 
 
   #
@@ -103,8 +104,9 @@ class window.OneDollar
   # add defined callbacks
   #
   on: (name, fn) ->
-
-    @binds[name] = fn
+    
+    if @temps[name] isnt undefined
+      @binds[name] = fn
 
     return @
 
@@ -118,7 +120,6 @@ class window.OneDollar
       delete @binds[name]
 
     return @
-
 
   #
   # run the recognizer
@@ -170,6 +171,30 @@ class window.OneDollar
         return args
 
     return false
+
+
+  #
+  # multitouch support: start candidate
+  #
+  start: (i, point) ->
+    @cands[i] = []
+    @cands[i].push point
+
+
+  #
+  # multitouch support: update candidate
+  #
+  update: (i, point) ->
+    @cands[i].push point
+
+
+  #
+  # multitouch support: end candidate
+  #
+  end: (i, point) ->
+    @cands[i].push point
+    @check @cands[i]
+    delete @cands[i]
 
 
   #
