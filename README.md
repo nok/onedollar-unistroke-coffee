@@ -34,10 +34,7 @@ one.add('triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]);
 one.add('circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]);
 // one.remove('circle');
 
-one.on('triangle', function(result){
-	alert(result.name+' ('+result.score+'%)');
-});
-one.on('circle', function(result){
+one.on('triangle circle', function(result){
 	alert(result.name+' ('+result.score+'%)');
 });
 // one.off('circle');

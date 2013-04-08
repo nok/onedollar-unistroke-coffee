@@ -104,9 +104,12 @@ class window.OneDollar
   # add defined callbacks
   #
   on: (name, fn) ->
+
+    names = name.split ' '
     
-    if @temps[name] isnt undefined
-      @binds[name] = fn
+    for name in names
+      if @temps[name] isnt undefined
+        @binds[name] = fn
 
     return @
 
