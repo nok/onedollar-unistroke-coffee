@@ -104,30 +104,6 @@ $('#element').onedollar([
 }
 ```
 
-### Feature-Detection
-
-I recommend you to use it with [Modernizr](https://github.com/Modernizr/Modernizr) and [RequireJS](https://github.com/jrburke/requirejs):
-
-```javascript
-if(Modernizr.touch===true){
-	require(["jquery.min.js", "onedollar.min.js", "jquery.onedollar.min.js"], function($){
-		$('#element').onedollar( /* ... */ );
-	}
-}
-```
-
-Or with just [Modernizr](https://github.com/Modernizr/Modernizr) and [yepnope.js](https://github.com/SlexAxton/yepnope.js):
-
-```javascript
-Modernizr.load({
-	test: Modernizr.touch,
-	yep : ["onedollar.min.js", "jquery.onedollar.min.js"],
-	complete: function (){
-		$('#element').onedollar( /* ... */ );
-	}
-});
-```
-
 ## License
 
 The library is Open Source Software released under the [MIT License](https://raw.github.com/voidplus/onedollar-coffeescript/master/MIT-LICENSE.txt). It's developed by [Darius Morawiec](http://voidplus.de).
