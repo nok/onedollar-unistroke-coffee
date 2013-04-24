@@ -18,43 +18,43 @@
 
 "use strict"
 
+
+class window.Vector
+
+  constructor: (@x=0.0, @y=0.0) ->
+
+  dist: (vector) ->
+    return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
+
+  add: (value) ->
+    if value instanceof Vector
+      @x += value.x
+      @y += value.y
+    else
+      @x += value
+      @y += value
+    return @
+
+  div: (value) ->
+    if value instanceof Vector
+      @x /= value.x
+      @y /= value.y
+    else
+      @x /= value
+      @y /= value
+    return @
+
+  mult: (value) ->
+    if value instanceof Vector
+      @x *= value.x
+      @y *= value.y
+    else
+      @x *= value
+      @y *= value
+    return @
+
+
 class window.OneDollar
-
-
-  class Vector
-
-    constructor: (@x=0.0, @y=0.0) ->
-
-    dist: (vector) ->
-      return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
-
-    add: (value) ->
-      if value instanceof Vector
-        @x += value.x
-        @y += value.y
-      else
-        @x += value
-        @y += value
-      return @
-
-    div: (value) ->
-      if value instanceof Vector
-        @x /= value.x
-        @y /= value.y
-      else
-        @x /= value
-        @y /= value
-      return @
-
-    mult: (value) ->
-      if value instanceof Vector
-        @x *= value.x
-        @y *= value.y
-      else
-        @x *= value
-        @y *= value
-      return @
-
 
   constructor: (score=80, parts=64, size=250, angle=45, step=2) ->
 
