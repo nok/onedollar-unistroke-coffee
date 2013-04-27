@@ -41,9 +41,9 @@ one.on('triangle circle', function(result){
 
 one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 
-// or
+// OR
 
-one.start(0, [99,231]); // start(index:int, point:Array)
+one.start(0, [99,231]); 		// start(index:int, point:Array)
 one.update(0, [108,232]); 
 // …
 one.update(0, [153,232]);
