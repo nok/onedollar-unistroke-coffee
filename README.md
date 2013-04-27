@@ -13,7 +13,7 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 ## Download
 
-[Manually download](https://github.com/voidplus/onedollar-coffeescript/archive/master.zip) or use [Bower](https://github.com/twitter/bower):
+[Download via GitHub](https://github.com/voidplus/onedollar-coffeescript/archive/master.zip) or use [Bower](https://github.com/twitter/bower):
 
 ```
 bower install onedollar
@@ -61,13 +61,32 @@ The plugin uses either [multitouch](http://caniuse.com/#feat=touch) or basic sin
 ```
 
 ```javascript
-$('#element').onedollar([
-	['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ], function(result){
-		alert(result.name+' ('+result.score+'%)');
-	}],
-	['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ], function(result){
-		alert(result.name+' ('+result.score+'%)');
-	}]
+$('#js-sketch').onedollar({
+	templates: [
+		['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]],
+		['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]]
+	],
+	binds: [
+		['circle triangle', function(result){
+			alert(result.name+' ('+result.score+'%)');
+		}]
+	]
+	//, score: 80 				// optional min score of detection in percent, default: 80
+});
+
+// OR
+
+$('#js-sketch').onedollar([
+	[
+		['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]],
+		['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]]
+	],
+	[
+		['circle triangle', function(result){
+			alert(result.name+' ('+result.score+'%)');
+		}]
+	],
+	80
 ]);
 ```
 
@@ -103,6 +122,10 @@ $('#element').onedollar([
 	]
 }
 ```
+
+## Questions?
+
+Don't be shy and feel free to contact me via [Twitter](https://twitter.com/darius_morawiec).
 
 ## License
 
