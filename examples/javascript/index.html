@@ -9,6 +9,7 @@
 </head>
 <body>
   <canvas class="sketch" id="js-sketch" width="500px" height="500px"></canvas>
+  <div class="data" id="js-data">Draw anticlockwise a circle or triangle.</div>
   <script>
 
     // OneDollar
@@ -25,7 +26,7 @@
     // Processing.js
     new Processing(document.getElementById('js-sketch'),function(p){
 
-      var candidate, draw, length, index;
+      var candidate, draw, length, str;
 
       p.setup = function(){
         p.size(500, 500);
@@ -42,25 +43,36 @@
         p.background(230);
         
         if(draw===true){
-          index = 0;
-          p.beginShape();
-          for (var l=candidate.length, i=0; i<l; i++) {
-              p.vertex(candidate[i][0], candidate[i][1]);
-          }
-          p.endShape();
+            p.stroke(0);
+        } else {
+            p.stroke(150);
         }
+
+        p.beginShape();
+        for (var l=candidate.length, i=0; i<l; i++) {
+            p.vertex(candidate[i][0], candidate[i][1]);
+        }
+        p.endShape();
       };
 
       p.mousePressed = function(){
         draw = true;
+        candidate = [];
       };
       p.mouseDragged = function(){
         candidate.push([p.mouseX, p.mouseY]);
       };
       p.mouseReleased = function(){
+
+        str = 'Here you see the data of the last move ('+candidate.length+' points). With it, you can add easily your own gestures. <br><br>[';
+        for (var l=candidate.length, i=0; i<l; i++) {
+            str = str+'['+candidate[i][0]+','+candidate[i][1]+']';
+        }
+        str += ']';
+        document.getElementById('js-data').innerHTML = str;
+
         one.check(candidate);
         draw = false;
-        candidate = [];
       };
 
     });

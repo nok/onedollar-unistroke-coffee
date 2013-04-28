@@ -20,3 +20,14 @@ body {
 .sketch:hover {
   cursor: pointer;
 }
+.data {
+  display: inline-block;
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  width: 500px;
+  margin-left: -250px;
+  font-family: Arial, sans-serif;
+  font-size: 12px; line-height: 15px;
+  color: #000;
+}

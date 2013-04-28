@@ -11,6 +11,11 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 > Wobbrock, J.O., Wilson, A.D. and Li, Y. (2007). [Gestures without libraries, toolkits or training: A $1 recognizer for user interface prototypes](http://faculty.washington.edu/wobbrock/pubs/uist-07.1.pdf). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST '07). Newport, Rhode Island (October 7-10, 2007). New York: ACM Press, pp. 159-168.
 
+## Examples
+
+* [JavaScript](http://htmlpreview.github.io/?https://raw.github.com/voidplus/onedollar-coffeescript/master/examples/javascript/index.html) (with use of the [canvas](http://caniuse.com/#feat=canvas) element)
+
+
 ## Download
 
 [Download via GitHub](https://github.com/voidplus/onedollar-coffeescript/archive/master.zip) or use [Bower](https://github.com/twitter/bower):
@@ -40,7 +45,7 @@ one.on('triangle circle', function(result){
 	alert(result.name+' ('+result.score+'%)');
 });
 // one.off('circle');
-
+	
 one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 // OR
 one.start(0, [99,231]); 		// start(index:int, point:Array)
