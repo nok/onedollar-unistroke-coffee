@@ -30,14 +30,21 @@ bower install onedollar
 ```javascript
 var one = new OneDollar();
 
+// OR
+
+var one = new OneDollar(80);	// optional min score of detection in percent, default: 80
+
+
 one.add('triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]);
 one.add('circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]);
 // one.remove('circle');
+
 
 one.on('triangle circle', function(result){
 	alert(result.name+' ('+result.score+'%)');
 });
 // one.off('circle');
+
 
 one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 
