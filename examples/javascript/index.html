@@ -70,8 +70,9 @@
 
         str = 'Here you see the data of the last move ('+candidate.length+' points). With it, you can add easily your own gestures. <br><br>[';
         for (var l=candidate.length, i=0; i<l; i++) {
-            str = str+'['+candidate[i][0]+','+candidate[i][1]+']';
+            str = str+'['+candidate[i][0]+','+candidate[i][1]+'],';
         }
+        str = str.slice(0, -1);
         str += ']';
         document.getElementById('js-data').innerHTML = str;
 
