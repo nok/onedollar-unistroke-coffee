@@ -6,13 +6,23 @@ body {
   position: relative;
   margin: 0; padding: 0;
 }
+a, .sketch, .data {
+  display: block;
+  position: relative;
+  margin: 0 auto 3em;
+  width: 500px;
+  overflow: hidden;
+}
+a {
+  font-family: Arial, sans-serif;
+  font-size: 18px; line-height: 18px;
+  color: #000;
+  text-decoration: none;
+  color: #0084b4;
+  margin-bottom: 1.5em;
+}
 .sketch {
-  display: inline-block;
-  position: absolute;
-  left: 50%; top: 50%;
-  margin-left: -250px;
-  margin-top: -250px;
-  width: 500px; height: 500px;
+  height: 360px;
   outline: none;
   background: #e6e6e6;
   border: 2px solid #bbbbbb;
@@ -21,12 +31,6 @@ body {
   cursor: pointer;
 }
 .data {
-  display: inline-block;
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  width: 500px;
-  margin-left: -250px;
   font-family: Arial, sans-serif;
   font-size: 12px; line-height: 15px;
   color: #000;

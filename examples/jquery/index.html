@@ -9,8 +9,12 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="sketch" id="js-sketch" width="500px" height="500px"></div>
-  <div class="data">Draw anticlockwise a circle or triangle.</div>
+  <div style="height: 3em;"></div><!-- b/c processing margin mouseX,mouseY bug -->
+
+  <canvas class="sketch" id="js-sketch" width="500px" height="360px"></canvas>
+  <a href="https://github.com/voidplus/onedollar-coffeescript" target="_n">OneDollar.js</a>
+  <div class="data" id="js-data">Draw anticlockwise a circle or triangle.</div>
+  
   <script>
     $(document).ready(function(){
       

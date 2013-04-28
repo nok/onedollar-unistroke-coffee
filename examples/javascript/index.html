@@ -8,8 +8,12 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas class="sketch" id="js-sketch" width="500px" height="500px"></canvas>
+  <div style="height: 3em;"></div><!-- b/c processing margin mouseX,mouseY bug -->
+  
+  <canvas class="sketch" id="js-sketch" width="500px" height="360px"></canvas>
+  <a href="https://github.com/voidplus/onedollar-coffeescript" target="_n">OneDollar.js</a>
   <div class="data" id="js-data">Draw anticlockwise a circle or triangle.</div>
+  
   <script>
 
     // OneDollar
@@ -29,7 +33,7 @@
       var candidate, draw, length, str;
 
       p.setup = function(){
-        p.size(500, 500);
+        p.size(500, 360);
         p.background(230);
         
         candidate = [];
