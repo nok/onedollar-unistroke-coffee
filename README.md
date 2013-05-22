@@ -11,9 +11,9 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 > Wobbrock, J.O., Wilson, A.D. and Li, Y. (2007). [Gestures without libraries, toolkits or training: A $1 recognizer for user interface prototypes](http://faculty.washington.edu/wobbrock/pubs/uist-07.1.pdf). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST '07). Newport, Rhode Island (October 7-10, 2007). New York: ACM Press, pp. 159-168.
 
-## Examples
+## Demo
 
-* [JavaScript](http://htmlpreview.github.io/?https://raw.github.com/voidplus/onedollar-coffeescript/master/examples/javascript/index.html) (with use of the [canvas](http://caniuse.com/#feat=canvas) element)
+* [JavaScript](http://voidplus.github.io/onedollar-coffeescript) (caniuse.com: [canvas](http://caniuse.com/#feat=canvas))
 
 
 ## Download
