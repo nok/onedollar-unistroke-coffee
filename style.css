@@ -1,37 +1,78 @@
 html, body {
-  width: 100%; height: 100%;
-  background: #fff;
+  width: 100%;
+  height: 100%;
 }
 body {
   position: relative;
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  color: #fff;
 }
-a, .sketch, .data {
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: 10;
+}
+h1, .description {
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  width: 300px;
+  padding: 0;
+  margin: 0 0 0 -150px;
+  font-size: 2.5em;
+  font-family: 'Kaushan Script', cursive;
+  text-align: center;
+}
+.description {
+  display: inline-block;
+  top: 110px;
+  width: 30%;
+  margin-left: -15%;
+  font: 14px/22px Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: rgba(255,255,255,0.8);
+}
+.description p {
+  margin-bottom: 15px;
+}
+h1, .description p {
+  pointer-events: none;
+}
+.data {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
   display: block;
-  position: relative;
-  margin: 0 auto 3em;
-  width: 500px;
+  padding: 1.5em;
   overflow: hidden;
+  background: #fff;
+  color: #aeaeae;
+  font: 12px/18px Helvetica Neue, Helvetica, Arial, sans-serif;
 }
-a {
-  font-family: Arial, sans-serif;
-  font-size: 18px; line-height: 18px;
-  color: #000;
-  text-decoration: none;
-  color: #0084b4;
-  margin-bottom: 1.5em;
+p {
+  padding: 0 0 0.5em 0;
+  margin: 0;
+}
+.data p:first-child {
+  color: #777;
+}
+.data p:last-child {
+  padding: 0;
 }
 .sketch {
-  height: 360px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
   outline: none;
-  background: #e6e6e6;
-  border: 2px solid #bbbbbb;
+  background: #2daacd;
 }
 .sketch:hover {
   cursor: pointer;
-}
-.data {
-  font-family: Arial, sans-serif;
-  font-size: 12px; line-height: 15px;
-  color: #000;
 }
