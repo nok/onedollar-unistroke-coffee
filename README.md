@@ -130,7 +130,7 @@ $('#js-sketch').onedollar([
 
 ## Questions?
 
-Don't be shy and feel free to contact me via [Twitter](https://twitter.com/darius_morawiec).
+Don't be shy and feel free to contact me via [Twitter](http://twitter.voidplus.de).
 
 ## License
 

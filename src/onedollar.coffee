@@ -16,51 +16,47 @@
 # http://depts.washington.edu/aimgroup/proj/dollar/
 
 
-"use strict"
-
-
-class window.Vector
-
-  constructor: (@x=0.0, @y=0.0) ->
-
-  dist: (vector) ->
-    return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
-
-  add: (value) ->
-    if value instanceof Vector
-      @x += value.x
-      @y += value.y
-    else
-      @x += value
-      @y += value
-    return @
-
-  div: (value) ->
-    if value instanceof Vector
-      @x /= value.x
-      @y /= value.y
-    else
-      @x /= value
-      @y /= value
-    return @
-
-  mult: (value) ->
-    if value instanceof Vector
-      @x *= value.x
-      @y *= value.y
-    else
-      @x *= value
-      @y *= value
-    return @
-
-
 class window.OneDollar
+
+
+  class Vector
+
+    constructor: (@x=0.0, @y=0.0) ->
+
+    dist: (vector) ->
+      return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
+
+    add: (value) ->
+      if value instanceof Vector
+        @x += value.x
+        @y += value.y
+      else
+        @x += value
+        @y += value
+      return @
+
+    div: (value) ->
+      if value instanceof Vector
+        @x /= value.x
+        @y /= value.y
+      else
+        @x /= value
+        @y /= value
+      return @
+
+    mult: (value) ->
+      if value instanceof Vector
+        @x *= value.x
+        @y *= value.y
+      else
+        @x *= value
+        @y *= value
+      return @
+
 
   constructor: (score=80, parts=64, size=250, angle=45, step=2) ->
 
-    @VERSION = "1.1.0"
-
-    @config =
+    @CFG =
       score:        score
 
     @MATH =
@@ -142,7 +138,7 @@ class window.OneDollar
 
     for name, template_points of @temps
       if @binds[name] isnt undefined
-        space = @__find_best_template points, template_points
+        space = @__findBestTemplate points, template_points
 
         if space < equality
           equality = space
@@ -158,7 +154,7 @@ class window.OneDollar
       ranking.sort (a,b) ->
         return if a.score < b.score then 1 else -1
 
-      if ranking[0].score >= @config.score
+      if ranking[0].score >= @CFG.score
 
         args =
           name:         ranking[0].name
@@ -166,7 +162,7 @@ class window.OneDollar
           path:
             start:      new Vector raw[0][0], raw[0][1]
             end:        new Vector raw[raw.length-1][0], raw[raw.length-1][1]
-            centroid:   @___get_centroid @__convert raw
+            centroid:   @___getCentroid @__convert raw
           ranking:      ranking
 
         @binds[template].apply @, [args]
@@ -207,9 +203,9 @@ class window.OneDollar
 
     points = @__convert points
     points = @__resample points
-    points = @__rotate_to_zero points
-    points = @__scale_to_square points
-    points = @__translate_to_origin points
+    points = @__rotateToZero points
+    points = @__scaleToSquare points
+    points = @__translateToOrigin points
 
     return points
 
@@ -232,7 +228,7 @@ class window.OneDollar
   #
   __resample: (points) ->
 
-    seperator = (@___get_length points) / (@ALGO.parts-1)
+    seperator = (@___getLength points) / (@ALGO.parts-1)
     distance = 0
     result = []
 
@@ -276,9 +272,9 @@ class window.OneDollar
   #
   # rotate the points
   #
-  __rotate_to_zero: (points) ->
+  __rotateToZero: (points) ->
 
-    centroid = @___get_centroid points
+    centroid = @___getCentroid points
     theta = Math.atan2 centroid.y-points[0].y, centroid.x-points[0].x
 
     return @___rotate points, -theta, centroid
@@ -287,7 +283,7 @@ class window.OneDollar
   #
   # scale the points to the bounding box
   #
-  __scale_to_square: (points) ->
+  __scaleToSquare: (points) ->
 
     maxX = maxY = -Infinity
     minX = minY = +Infinity
@@ -304,16 +300,16 @@ class window.OneDollar
   #
   # translate the points to origin
   #
-  __translate_to_origin: (points) ->
+  __translateToOrigin: (points) ->
 
-    centroid = @___get_centroid points
+    centroid = @___getCentroid points
     return @___translate points, centroid.mult -1
 
 
   #
   # find the best template
   #
-  __find_best_template: (points, template_points) ->
+  __findBestTemplate: (points, template_points) ->
 
     a = @___radians -@ALGO.angle
     b = @___radians @ALGO.angle
@@ -322,8 +318,8 @@ class window.OneDollar
     c = (1.0-@MATH.PHI)*b + @MATH.PHI*a
     d = (1.0-@MATH.PHI)*a + (@MATH.PHI*b)
 
-    path_a = @___get_difference_at_angle points, template_points, c
-    path_b = @___get_difference_at_angle points, template_points, d
+    path_a = @___getDifferenceAtAngle points, template_points, c
+    path_b = @___getDifferenceAtAngle points, template_points, d
 
     if path_a isnt +Infinity and path_b isnt +Infinity
       while Math.abs(b-a)>treshold
@@ -332,13 +328,13 @@ class window.OneDollar
           d = c
           path_b = path_a
           c = @MATH.PHI*a + (1.0-@MATH.PHI)*b
-          path_a = @___get_difference_at_angle points, template_points, c
+          path_a = @___getDifferenceAtAngle points, template_points, c
         else
           a = c
           c = d
           path_a = path_b
           d = @MATH.PHI*b + (1.0-@MATH.PHI)*a
-          path_b = @___get_difference_at_angle points, template_points, d
+          path_b = @___getDifferenceAtAngle points, template_points, d
       return Math.min path_a, path_b
     return +Infinity
 
@@ -346,7 +342,7 @@ class window.OneDollar
   #
   # calculate the centroid of a path
   #
-  ___get_centroid: (points) ->
+  ___getCentroid: (points) ->
     centroid = new Vector
     for p in points
       centroid.add p
@@ -357,7 +353,7 @@ class window.OneDollar
   #
   # calculate the length of a path
   #
-  ___get_length: (points) ->
+  ___getLength: (points) ->
 
     length = 0.0
     tmp = null
@@ -373,18 +369,18 @@ class window.OneDollar
   #
   # calculate the difference between two paths at a specific angle
   #  
-  ___get_difference_at_angle: (points, template_points, radians) ->
+  ___getDifferenceAtAngle: (points, template_points, radians) ->
 
-    centroid = @___get_centroid points
+    centroid = @___getCentroid points
     points = @___rotate points, radians, centroid
 
-    return @___get_difference points, template_points
+    return @___getDifference points, template_points
 
 
   #
   # calculate the difference between two paths
   #
-  ___get_difference: (template, candidate) ->
+  ___getDifference: (template, candidate) ->
 
     distance = 0.0
     for point, i in template

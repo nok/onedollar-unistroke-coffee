@@ -5,15 +5,19 @@
   <title>OneDollar.js JavaScript Example</title>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.1/processing-api.min.js"></script>
   <script src="../../lib/onedollar.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div style="height: 3em;"></div><!-- b/c processing margin mouseX,mouseY bug -->
-  
-  <canvas class="sketch" id="js-sketch" width="500px" height="360px"></canvas>
-  <a href="https://github.com/voidplus/onedollar-coffeescript" target="_n">OneDollar.js</a>
-  <div class="data" id="js-data">Draw anticlockwise a circle or triangle.</div>
-  
+  <h1>OneDollar.js</h1>
+  <div class="description">
+    <p>Implementation of the $1 Gesture Recognizer, a two-dimensional template based gesture recognition, for JavaScript and jQuery.</p>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://voidplus.github.io/onedollar-coffeescript/" data-text="Implementation of the $1 Gesture Recognizer, a two-dimensional template based gesture recognition, for JavaScript and jQuery." data-via="darius_morawiec"></a>
+    <div class="g-plusone" data-size="medium" data-href="http://voidplus.github.io/onedollar-coffeescript/"></div>
+  </div>
+  <a href="https://github.com/voidplus/onedollar-coffeescript"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+  <div class="data" id="js-data"><p>Draw anticlockwise a circle or triangle.</p></div>
+  <canvas class="sketch" id="js-sketch"></canvas>
   <script>
     // OneDollar
     var one = new OneDollar();
@@ -26,14 +30,19 @@
       // console.log(result.ranking);
     });
 
+    // Canvas
+    var canvas = document.getElementById('js-sketch');
+    canvas.width = document.width;
+    canvas.height = document.height;
+
     // Processing.js
-    new Processing(document.getElementById('js-sketch'),function(p){
+    new Processing(canvas, function(p){
 
       var candidate, draw, length, str;
 
       p.setup = function(){
-        p.size(500, 360);
-        p.background(230);
+        p.size(document.width, document.height);
+        p.background(0,0,0,0);
         
         candidate = [];
         draw = false;
@@ -43,12 +52,12 @@
       };
 
       p.draw = function(){
-        p.background(230);
+        p.background(0,0,0,0);
         
         if(draw===true){
-            p.stroke(0);
+            p.stroke(255);
         } else {
-            p.stroke(150);
+            p.stroke(255,100);
         }
 
         p.beginShape();
@@ -67,12 +76,15 @@
       };
       p.mouseReleased = function(){
 
-        str = 'Here you see the data of the last move ('+candidate.length+' points). With it, you can add easily your own gestures. <br><br>[';
-        for (var l=candidate.length, i=0; i<l; i++) {
-            str = str+'['+candidate[i][0]+','+candidate[i][1]+'],';
+        str = '<p>Draw anticlockwise a circle or triangle. Here you see the data of your last move ('+candidate.length+' points). With it you can add easily your own gestures.</p>';
+        if(candidate.length){
+          str += '<p>[';
+          for (var l=candidate.length, i=0; i<l; i++) {
+              str = str+'['+candidate[i][0]+','+candidate[i][1]+'],';
+          }
+          str = str.slice(0, -1);
+          str += ']</p>';
         }
-        str = str.slice(0, -1);
-        str += ']';
         document.getElementById('js-data').innerHTML = str;
 
         one.check(candidate);
@@ -81,5 +93,7 @@
 
     });
   </script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 </body>
 </html>

@@ -11,8 +11,8 @@ $.fn.extend
 
     return @each ()->
 
-      one     = null
-      default = 80
+      one = null
+      def = 80
 
       isArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
 
@@ -22,7 +22,7 @@ $.fn.extend
 
         if length isnt null
 
-          one = new window.OneDollar if length is 3 then parseInt data[2] else default
+          one = new window.OneDollar if length is 3 then parseInt data[2] else def
 
           for template in data[0]
             one.add template[0], template[1]
@@ -34,7 +34,7 @@ $.fn.extend
 
         if typeof data.templates isnt 'undefined' and typeof data.binds isnt 'undefined'
 
-          one = new window.OneDollar if typeof data.score isnt 'undefined' then parseInt data.score else default
+          one = new window.OneDollar if typeof data.score isnt 'undefined' then parseInt data.score else def
 
           for template in data.templates
             one.add template[0], template[1]

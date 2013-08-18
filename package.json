@@ -1,0 +1,26 @@
+{
+  "name": "OneDollar.js",
+  "version": "1.1.0",
+  "description": "Implementation of the $1 Gesture Recognizer, a two-dimensional template based gesture recognition, for JavaScript and jQuery.",
+  "main": "/examples",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/voidplus/onedollar-coffeescript.git"
+  },
+  "author": "Darius Morawiec",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "be544c89d589b983ef49984f967e8a90ae78472d",
+  "bugs": {
+    "url": "https://github.com/voidplus/onedollar-coffeescript/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-contrib-uglify": "latest"
+  }
+}
