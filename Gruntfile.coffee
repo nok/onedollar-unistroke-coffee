@@ -4,7 +4,7 @@ module.exports = (grunt) ->
     coffee:
       all:
         options:
-          bare: true
+          bare: false
         files:
           'lib/onedollar.js': 'src/onedollar.coffee'
           'lib/jquery.onedollar.js': 'src/jquery.onedollar.coffee'
