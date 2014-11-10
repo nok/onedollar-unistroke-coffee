@@ -2,7 +2,7 @@
   "name": "OneDollar.js",
   "version": "1.1.0",
   "description": "Implementation of the $1 Gesture Recognizer, a two-dimensional template based gesture recognition, for JavaScript and jQuery.",
-  "main": "/examples",
+  "main": "/lib/onedollar.min.js",
   "directories": {
     "example": "examples"
   },
