@@ -1,6 +1,6 @@
 # The library is Open Source Software released under the MIT License.
 # It's developed by Darius Morawiec. 2013-2014
-# 
+#
 # https://github.com/voidplus/onedollar-coffeescript
 #
 # ---
@@ -8,21 +8,24 @@
 # The $1 Gesture Recognizer is a research project by Wobbrock, Wilson and Li of
 # the University of Washington and Microsoft Research. It describes a simple
 # algorithm for accurate and fast recognition of drawn gestures.
-#  
+#
 # Gestures can be recognised at any position, scale, and under any rotation.
 # The system requires little training, achieving a 97% recognition rate with
 # only one template for each gesture.
-# 
+#
 # http://depts.washington.edu/aimgroup/proj/dollar/
 
 
-class window.OneDollar
+class OneDollar
 
-
+  # Tiny sublclass for better math handling
   class Vector
 
     constructor: (@x=0.0, @y=0.0) ->
 
+    # Calculate the euclid distance between two vectors.
+    #
+    # @param [Vector] Calculate the distance to that specific vector.
     dist: (vector) ->
       return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
 
@@ -148,7 +151,7 @@ class window.OneDollar
           name: name
           score: parseFloat(((1.0 - space / @MATH.HALFDIAGONAL)*100).toFixed(2))
         }
-        
+
     if template isnt null
 
       ranking.sort (a,b) ->
@@ -162,7 +165,7 @@ class window.OneDollar
           path:
             start:      new Vector raw[0][0], raw[0][1]
             end:        new Vector raw[raw.length-1][0], raw[raw.length-1][1]
-            centroid:   @___getCentroid @__convert raw
+            centroid:   @___centroid @__convert raw
           ranking:      ranking
 
         @binds[template].apply @, [args]
@@ -203,9 +206,9 @@ class window.OneDollar
 
     points = @__convert points
     points = @__resample points
-    points = @__rotateToZero points
-    points = @__scaleToSquare points
-    points = @__translateToOrigin points
+    points = @__r2Zero points
+    points = @__s2Square points
+    points = @__t2Origin points
 
     return points
 
@@ -228,7 +231,7 @@ class window.OneDollar
   #
   __resample: (points) ->
 
-    seperator = (@___getLength points) / (@ALGO.parts-1)
+    seperator = (@___length points) / (@ALGO.parts-1)
     distance = 0
     result = []
 
@@ -272,38 +275,38 @@ class window.OneDollar
   #
   # rotate the points
   #
-  __rotateToZero: (points) ->
+  __r2Zero: (points) ->
 
-    centroid = @___getCentroid points
+    centroid = @___centroid points
     theta = Math.atan2 centroid.y-points[0].y, centroid.x-points[0].x
 
-    return @___rotate points, -theta, centroid
+    return @___r points, -theta, centroid
 
 
   #
   # scale the points to the bounding box
   #
-  __scaleToSquare: (points) ->
+  __s2Square: (points) ->
 
     maxX = maxY = -Infinity
     minX = minY = +Infinity
-    
+
     for point in points
       minX = Math.min point.x, minX
       maxX = Math.max point.x, maxX
       minY = Math.min point.y, minY
       maxY = Math.max point.y, maxY
-    
-    return @___scale points, new Vector @ALGO.size/(maxX-minX), @ALGO.size/(maxY-minY)
+
+    return @___s points, new Vector @ALGO.size/(maxX-minX), @ALGO.size/(maxY-minY)
 
 
   #
   # translate the points to origin
   #
-  __translateToOrigin: (points) ->
+  __t2Origin: (points) ->
 
-    centroid = @___getCentroid points
-    return @___translate points, centroid.mult -1
+    centroid = @___centroid points
+    return @___t points, centroid.mult -1
 
 
   #
@@ -311,9 +314,9 @@ class window.OneDollar
   #
   __findBestTemplate: (points, template_points) ->
 
-    a = @___radians -@ALGO.angle
-    b = @___radians @ALGO.angle
-    treshold = @___radians @ALGO.step
+    a = @___rd -@ALGO.angle
+    b = @___rd @ALGO.angle
+    treshold = @___rd @ALGO.step
 
     c = (1.0-@MATH.PHI)*b + @MATH.PHI*a
     d = (1.0-@MATH.PHI)*a + (@MATH.PHI*b)
@@ -342,7 +345,7 @@ class window.OneDollar
   #
   # calculate the centroid of a path
   #
-  ___getCentroid: (points) ->
+  ___centroid: (points) ->
     centroid = new Vector
     for p in points
       centroid.add p
@@ -353,7 +356,7 @@ class window.OneDollar
   #
   # calculate the length of a path
   #
-  ___getLength: (points) ->
+  ___length: (points) ->
 
     length = 0.0
     tmp = null
@@ -368,11 +371,11 @@ class window.OneDollar
 
   #
   # calculate the difference between two paths at a specific angle
-  #  
+  #
   ___getDifferenceAtAngle: (points, template_points, radians) ->
 
-    centroid = @___getCentroid points
-    points = @___rotate points, radians, centroid
+    centroid = @___centroid points
+    points = @___r points, radians, centroid
 
     return @___getDifference points, template_points
 
@@ -392,7 +395,7 @@ class window.OneDollar
   #
   # translation
   #
-  ___translate: (points, offset) ->
+  ___t: (points, offset) ->
 
     for point in points
       point.add offset
@@ -403,7 +406,7 @@ class window.OneDollar
   #
   # scaling
   #
-  ___scale: (points, offset) ->
+  ___s: (points, offset) ->
 
     for point in points
       point.mult offset
@@ -414,7 +417,7 @@ class window.OneDollar
   #
   # rotation
   #
-  ___rotate: (points, radians, pivot) ->
+  ___r: (points, radians, pivot) ->
 
     sin = Math.sin radians
     cos = Math.cos radians
@@ -430,6 +433,8 @@ class window.OneDollar
   #
   # convert degrees to radians
   #
-  ___radians: (degrees) ->
+  ___rd: (degrees) ->
 
     return degrees * Math.PI / 180.0
+
+window.OneDollar = OneDollar

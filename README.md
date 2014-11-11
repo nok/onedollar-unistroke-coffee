@@ -11,14 +11,23 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 > Wobbrock, J.O., Wilson, A.D. and Li, Y. (2007). [Gestures without libraries, toolkits or training: A $1 recognizer for user interface prototypes](http://faculty.washington.edu/wobbrock/pubs/uist-07.1.pdf). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST '07). Newport, Rhode Island (October 7-10, 2007). New York: ACM Press, pp. 159-168.
 
+
 ## Demo
 
-* [JavaScript](http://voidplus.github.io/onedollar-coffeescript) (caniuse.com: [canvas](http://caniuse.com/#feat=canvas))
+* [Plain JavaScript](http://voidplus.github.io/onedollar-coffeescript)
+
+
+## File size
+
+Version | Original | Uglified | Gzipped
+--- | --- | --- | ---
+[Plain-JavaScript](#plain-javascript) | [11.2 kB](blob/master/lib/onedollar.js) | [5 kB](blob/master/lib/onedollar.min.js) | 1 kB
+[+jQuery Adapter](#jquery) | 11.2 kB + [3.5 kB](blob/master/lib/jquery.onedollar.js) | [6.4 kB](blob/master/lib/jquery.onedollar.min.js) | 1.4 kB
 
 
 ## Download
 
-[Download via GitHub](https://github.com/voidplus/onedollar-coffeescript/archive/master.zip) or use [Bower](https://github.com/twitter/bower):
+Download the ['master' branch](archive/master.zip?raw=true), have a look at [releases](releases), or use [Bower](https://github.com/twitter/bower):
 
 ```
 bower install onedollar
@@ -29,27 +38,27 @@ bower install onedollar
 ### Plain-JavaScript
 
 ```html
-<script src="onedollar.js"></script>	
+<script src="onedollar.js"></script>
 ```
 
 ```javascript
 var one = new OneDollar();
 // OR
-var one = new OneDollar(80);	// optional min score of detection in percent, default: 80
+var one = new OneDollar(80);  // optional min score of detection in percent, default: 80
 
 one.add('triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]);
 one.add('circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]);
 // one.remove('circle');
 
 one.on('triangle circle', function(result){
-	alert(result.name+' ('+result.score+'%)');
+  alert(result.name+' ('+result.score+'%)');
 });
 // one.off('circle');
-	
+
 one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 // OR
-one.start(0, [99,231]); 		// start(index:int, point:Array)
-one.update(0, [108,232]); 
+one.start(0, [99,231]);     // start(index:int, point:Array)
+one.update(0, [108,232]);
 // …
 one.update(0, [153,232]);
 one.end(0, [160,233]);
@@ -67,31 +76,31 @@ The plugin uses either [multitouch](http://caniuse.com/#feat=touch) or basic sin
 
 ```javascript
 $('#js-sketch').onedollar({
-	templates: [
-		['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]],
-		['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]]
-	],
-	binds: [
-		['circle triangle', function(result){
-			alert(result.name+' ('+result.score+'%)');
-		}]
-	]
-	//, score: 80 				// optional min score of detection in percent, default: 80
+  templates: [
+    ['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]],
+    ['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]]
+  ],
+  binds: [
+    ['circle triangle', function(result){
+      alert(result.name+' ('+result.score+'%)');
+    }]
+  ]
+  //, score: 80    // optional min score of detection in percent, default: 80
 });
 
 // OR
 
 $('#js-sketch').onedollar([
-	[
-		['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]],
-		['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]]
-	],
-	[
-		['circle triangle', function(result){
-			alert(result.name+' ('+result.score+'%)');
-		}]
-	],
-	80
+  [
+    ['circle', [[127,141] ,[124,140], [129,136], [126,139] /* , ... */ ]],
+    ['triangle', [[137,139], [135,141], [154,160], [148,155] /* , ... */ ]]
+  ],
+  [
+    ['circle triangle', function(result){
+      alert(result.name+' ('+result.score+'%)');
+    }]
+  ],
+  80
 ]);
 ```
 
@@ -99,32 +108,32 @@ $('#js-sketch').onedollar([
 
 ```
 {
-	name: "triangle",			// name of template
-	score: 82.89,				// percent of equality
-	path: {
-		start: {				// first point of the path
-			x: 220,
-			y: 184
-		},
-		end: {					// last point of the path
-			x: 241,
-			y: 211
-		},
-		centroid: {				// central point of the path
-			x: 235,
-			y: 269
-		}
-	},
-	ranking: [
-		{						// index 0 = best result
-			name: "triangle",
-			score: 82.89
-		},
-		{
-			name: "circle",
-			score: 75.84		
-		}
-	]
+  name: "triangle",     // name of template
+  score: 82.89,           // percent of similarity
+  path: {
+    start: {                    // first point
+      x: 220,
+      y: 184
+    },
+    end: {                     // last point
+      x: 241,
+      y: 211
+    },
+    centroid: {              // central point
+      x: 235,
+      y: 269
+    }
+  },
+  ranking: [
+    {                             // index 0 = best result
+      name: "triangle",
+      score: 82.89
+    },
+    {                             // index 1 = 2nd best result
+      name: "circle",
+      score: 75.84
+    }
+  ]
 }
 ```
 
@@ -132,6 +141,7 @@ $('#js-sketch').onedollar([
 
 Don't be shy and feel free to contact me via [Twitter](http://twitter.voidplus.de).
 
+
 ## License
 
-The library is Open Source Software released under the [MIT License](https://raw.github.com/voidplus/onedollar-coffeescript/master/MIT-LICENSE.txt). It's developed by [Darius Morawiec](http://voidplus.de).
+The library is Open Source Software released under the [MIT License](MIT-LICENSE.txt). It's developed by [Darius Morawiec](http://voidplus.de).

@@ -1,6 +1,6 @@
 # The library is Open Source Software released under the MIT License.
 # It's developed by Darius Morawiec. 2013-2014
-# 
+#
 # https://github.com/voidplus/onedollar-coffeescript
 
 $ = jQuery
@@ -17,7 +17,7 @@ $.fn.extend
       isArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
 
       if isArray data
-        
+
         length = if data.length is 2 or 3 then data.length else null
 
         if length isnt null
