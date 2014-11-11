@@ -38,7 +38,7 @@ bower install onedollar
 ### Plain-JavaScript
 
 ```html
-<script src="onedollar.js"></script>
+<script src="onedollar.min.js"></script>
 ```
 
 ```javascript
@@ -70,8 +70,7 @@ The plugin uses either [multitouch](http://caniuse.com/#feat=touch) or basic sin
 
 ```html
 <script src="jquery.min.js"></script>
-<script src="onedollar.js"></script>
-<script src="jquery.onedollar.js"></script>
+<script src="jquery.onedollar.min.js"></script>
 ```
 
 ```javascript
