@@ -21,8 +21,8 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 
 Version | Original | Uglified | Gzipped
 --- | --- | --- | ---
-[Plain-JavaScript](#plain-javascript) | [11.2 kB](blob/master/lib/onedollar.js) | [5 kB](blob/master/lib/onedollar.min.js) | 1 kB
-[+jQuery Adapter](#jquery) | 11.2 kB + [3.5 kB](blob/master/lib/jquery.onedollar.js) | [6.4 kB](blob/master/lib/jquery.onedollar.min.js) | 1.4 kB
+[Plain-JavaScript](#plain-javascript) | [11.2 kB](lib/onedollar.js) | [5 kB](lib/onedollar.min.js) | 1 kB
+[+jQuery Adapter](#jquery) | 11.2 kB + [3.5 kB](lib/jquery.onedollar.js) | [6.4 kB](lib/jquery.onedollar.min.js) | 1.4 kB
 
 
 ## Download
@@ -57,7 +57,7 @@ one.on('triangle circle', function(result){
 
 one.check([[99,231],[108,232], ... ,[153,232],[160,233]]);
 // OR
-one.start(0, [99,231]);     // start(index:int, point:Array)
+one.start(0, [99,231]);       // start(index:int, point:Array)
 one.update(0, [108,232]);
 // …
 one.update(0, [153,232]);
@@ -108,28 +108,28 @@ $('#js-sketch').onedollar([
 
 ```
 {
-  name: "triangle",     // name of template
-  score: 82.89,           // percent of similarity
+  name: "triangle",      // name of template
+  score: 82.89,          // percent of similarity
   path: {
-    start: {                    // first point
+    start: {             // first point
       x: 220,
       y: 184
     },
-    end: {                     // last point
+    end: {               // last point
       x: 241,
       y: 211
     },
-    centroid: {              // central point
+    centroid: {          // central point
       x: 235,
       y: 269
     }
   },
   ranking: [
-    {                             // index 0 = best result
+    {                    // index 0 = best result
       name: "triangle",
       score: 82.89
     },
-    {                             // index 1 = 2nd best result
+    {                    // index 1 = 2nd best result
       name: "circle",
       score: 75.84
     }
