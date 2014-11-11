@@ -106,7 +106,7 @@ $('#js-sketch').onedollar([
 
 ### Result
 
-```json
+```
 {
   name: "triangle",      // name of template
   score: 82.89,          // percent of similarity
