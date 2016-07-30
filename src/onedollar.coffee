@@ -1,7 +1,7 @@
 # The library is Open Source Software released under the MIT License.
-# It's developed by Darius Morawiec. 2013-2014
+# It's developed by Darius Morawiec. 2013-2016
 #
-# https://github.com/voidplus/onedollar-coffeescript
+# https://github.com/nok/onedollar-coffeescript
 #
 # ---
 #
@@ -16,425 +16,471 @@
 # http://depts.washington.edu/aimgroup/proj/dollar/
 
 
+
 class OneDollar
 
-  # Tiny sublclass for better math handling
-  class Vector
 
-    constructor: (@x=0.0, @y=0.0) ->
+  # Math constants:
+  PHI = 0.5 * (-1.0 + Math.sqrt(5.0))
 
-    # Calculate the euclid distance between two vectors.
-    #
-    # @param [Vector] Calculate the distance to that specific vector.
-    dist: (vector) ->
-      return Math.sqrt( Math.pow((@x-vector.x),2) + Math.pow((@y-vector.y),2) )
+  # Prepared inner variables:
+  SIZE = HALF = ANGLE = STEP = null
 
-    add: (value) ->
-      if value instanceof Vector
-        @x += value.x
-        @y += value.y
-      else
-        @x += value
-        @y += value
-      return @
-
-    div: (value) ->
-      if value instanceof Vector
-        @x /= value.x
-        @y /= value.y
-      else
-        @x /= value
-        @y /= value
-      return @
-
-    mult: (value) ->
-      if value instanceof Vector
-        @x *= value.x
-        @y *= value.y
-      else
-        @x *= value
-        @y *= value
-      return @
+  # Internal data handlers:
+  _options = {}
+  _templates = {}
+  _binds = {}
+  _hasBinds = false
+  _candidates = []
 
 
-  constructor: (score=80, parts=64, size=250, angle=45, step=2) ->
-
-    @CFG =
-      score:        score
-
-    @MATH =
-      PHI:          0.5 * (-1.0+Math.sqrt(5.0))
-      HALFDIAGONAL: 0.5 * Math.sqrt(size*size + size*size)
-
-    @ALGO =
-      parts:  parts
-      size:   size
-      angle:  angle
-      step:   step
-
-    @temps = {}
-    @binds = {}
-    @cands = []
-
-
+  # The constructor of the algorithm.
   #
-  # add new template gesture
+  # @param {[object]} options  The options of the algorithm.
   #
+  # @return OneDollar
+  constructor: (options = {}) ->
+    _options = options
+
+    # Threshold in percent of callbacks:
+    if !('score' of _options)
+      _options['score'] = 80
+
+    if !('parts' of _options)
+      _options['parts'] = 64
+
+    if !('angle' of _options)
+      _options['angle'] = 45
+    ANGLE = ___radians _options.angle
+
+    if !('step' of _options)
+      _options['step'] = 2
+    STEP = ___radians _options.step
+
+    # Size of bounding box:
+    if !('size' of _options)
+      _options['size'] = 250.0
+    SIZE = _options.size
+    HALF = 0.5 * Math.sqrt(SIZE * SIZE + SIZE * SIZE)
+
+    return @
+
+
+  # Add a new template.
+  #
+  # @param {String} name  The name of the template.
+  # @param {Array} points  The points of the gesture.
+  #
+  # @return OneDollar
   add: (name, points) ->
-
     if points.length > 0
-      @temps[name] = @_transform points
-
+      _templates[name] = _transform points
     return @
 
 
+  # Remove a template.
   #
-  # remove template gesture
+  # @param {String} name  The name of the template.
   #
+  # @return OneDollar
   remove: (name) ->
-
-    if @temps[name] isnt undefined
-      delete @temps[name]
-
+    if _templates[name] isnt undefined
+      delete _templates[name]
     return @
 
 
+  # Bind callback for chosen templates.
   #
-  # add defined callbacks
+  # @param {String} name  The name of the template.
+  # @param {function} fn  The callback function.
   #
+  # @return OneDollar
   on: (name, fn) ->
-
-    names = name.split ' '
+    names = []
+    if name == "*"
+      for name, template of _templates
+        names.push name
+    else
+      names = name.split ' '
 
     for name in names
-      if @temps[name] isnt undefined
-        @binds[name] = fn
-
+      if _templates[name] isnt undefined
+        _binds[name] = fn
+        _hasBinds = true
+      else
+        throw new Error "The template '" + name + "' isn't defined."
     return @
 
 
+  # Unbind callback for chosen templates.
   #
-  # remove defined callbacks
+  # @param {String} name  The name of the template.
   #
+  # @return OneDollar
   off: (name) ->
-
-    if @binds[name] isnt undefined
-      delete @binds[name]
-
+    if _binds[name] isnt undefined
+      delete _binds[name]
+      _hasBinds = false
+      for name, bind of _binds
+        if _templates.hasOwnProperty name
+          _hasBinds = true
+          break
     return @
 
+
+  # Get information about the algorithm.
   #
-  # run the recognizer
+  # @return Object  Return options, templates and binds.
+  toObject: ->
+    return {
+      options: _options
+      templates: _templates
+      binds: _binds
+    }
+
+
+  # Create a new gesture candidate.
   #
-  check: (points) ->
+  # @param {Integer} id   The unique ID of the candidate.
+  # @param {Array} point  The start position of the candidate.
+  #
+  # @return OneDollar
+  start: (id, point) ->
+    if typeof(id) is 'object' and typeof(point) is 'undefined'
+      point = id
+      id = -1
+    _candidates[id] = []
+    @update id, point
+    return @
 
-    raw = points
 
-    if points.length > 0
-      points = @_transform points
-    else
-      return false
+  # Add a new position to a created candidate.
+  #
+  # @param {Integer} id   The unique ID of the candidate.
+  # @param {Array} point  The new position of the candidate.
+  #
+  # @return OneDollar
+  update: (id, point) ->
+    if typeof(id) is 'object' and typeof(point) is 'undefined'
+      point = id
+      id = -1
+    _candidates[id].push point
+    return @
 
-    equality = +Infinity
-    template = null
+
+  # Close a new gesture candidate and trigger the gesture recognition.
+  #
+  # @param {Integer} id   The unique ID of the candidate.
+  # @param {Array} point  The last position of the candidate.
+  #
+  # @return OneDollar
+  end: (id, point) ->
+    if typeof(id) is 'object' and typeof(point) is 'undefined'
+      point = id
+      id = -1
+    @update id, point
+    result = @check _candidates[id]
+    delete _candidates[id]
+    return result
+
+
+  # Run the gesture recognition.
+  #
+  # @param {Array} candidate The candidate gesture.
+  #
+  # @return {boolean|Object} The result object.
+  check: (candidate) ->
+    args = false
+    points = candidate.length
+    if points < 3
+      return args
+
+    path =
+      start: [candidate[0][0], candidate[0][1]]
+      end: [candidate[points - 1][0], candidate[points - 1][1]]
+      centroid: if points > 1 then ___centroid candidate else path.start
+    candidate = _transform candidate
+
     ranking = []
-
-    for name, template_points of @temps
-      if @binds[name] isnt undefined
-        space = @__findBestTemplate points, template_points
-
-        if space < equality
-          equality = space
-          template = name
-
-        ranking.push {
+    bestDist = +Infinity
+    bestName = null
+    for name, template of _templates
+      if _hasBinds == false or _binds[name] isnt undefined
+        distance = _findBestMatch candidate, template
+        score = parseFloat(((1.0 - distance / HALF) * 100).toFixed(2))
+        if isNaN score
+          score = 0.0
+        ranking.push
           name: name
-          score: parseFloat(((1.0 - space / @MATH.HALFDIAGONAL)*100).toFixed(2))
-        }
+          score: score
+        if distance < bestDist
+          bestDist = distance
+          bestName = name
 
-    if template isnt null
+    if ranking.length > 0
+      # Sorting:
+      if ranking.length > 1
+        ranking.sort (a, b) ->
+          return if a.score < b.score then 1 else -1
 
-      ranking.sort (a,b) ->
-        return if a.score < b.score then 1 else -1
+      idx = candidate.length - 1
+      args =
+        name: ranking[0].name
+        score: ranking[0].score
+        recognized: false
+        path: path
+        ranking: ranking
 
-      if ranking[0].score >= @CFG.score
+      if ranking[0].score >= _options.score
+        args.recognized = true
+        if _hasBinds
+          _binds[ranking[0].name].apply @, [args]
 
-        args =
-          name:         ranking[0].name
-          score:        ranking[0].score
-          path:
-            start:      new Vector raw[0][0], raw[0][1]
-            end:        new Vector raw[raw.length-1][0], raw[raw.length-1][1]
-            centroid:   @___centroid @__convert raw
-          ranking:      ranking
-
-        @binds[template].apply @, [args]
-
-        return args
-
-    return false
+    return args
 
 
+  # Transform the data  to a comparable format.
   #
-  # multitouch support: start candidate
+  # @param {Array} points The raw candidate gesture.
   #
-  start: (i, point) ->
-    @cands[i] = []
-    @cands[i].push point
-
-
-  #
-  # multitouch support: update candidate
-  #
-  update: (i, point) ->
-    @cands[i].push point
-
-
-  #
-  # multitouch support: end candidate
-  #
-  end: (i, point) ->
-    @cands[i].push point
-    @check @cands[i]
-    delete @cands[i]
-
-
-  #
-  # transform the points
-  #
-  _transform: (points) ->
-
-    points = @__convert points
-    points = @__resample points
-    points = @__r2Zero points
-    points = @__s2Square points
-    points = @__t2Origin points
-
+  # @return Array The transformed candidate.
+  _transform = (points) ->                 # Algorithm step:
+    points = __resample points             # (1)
+    points = __rotateToZero points       # (2)
+    points = __scaleToSquare points      # (3)
+    points = __translateToOrigin points  # (4)
     return points
 
 
+  # Find the best match between a candidate and template.
   #
-  # convert arrays to vectors
+  # @param {Array} candidate The candidate gesture.
+  # @param {Array} template  The template gesture.
   #
-  __convert: (points) ->
+  # @return Float The computed smallest distance.
+  _findBestMatch = (candidate, template) ->
+    rt = ANGLE
+    lt = -ANGLE
 
-    result = []
+    centroid = ___centroid candidate
+    x1 = PHI * lt + (1.0 - PHI) * rt
+    f1 = __distanceAtAngle candidate, template, x1, centroid
+    x2 = (1.0 - PHI) * lt + PHI * rt
+    f2 = __distanceAtAngle candidate, template, x2, centroid
 
-    for point in points
-      result.push new Vector point[0], point[1]
-
-    return result
-
-
-  #
-  # resample the points
-  #
-  __resample: (points) ->
-
-    seperator = (@___length points) / (@ALGO.parts-1)
-    distance = 0
-    result = []
-
-    while points.length isnt 0
-      prev = points.pop()
-
-      # handle the fix first point
-      if result.length is 0
-        result.push prev
+    while (Math.abs(rt - lt) > STEP)
+      if f1 < f2
+        rt = x2
+        x2 = x1
+        f2 = f1
+        x1 = PHI * lt + (1.0 - PHI) * rt
+        f1 = __distanceAtAngle candidate, template, x1, centroid
       else
+        lt = x1
+        x1 = x2
+        f1 = f2
+        x2 = (1.0 - PHI) * lt + PHI * rt
+        f2 = __distanceAtAngle candidate, template, x2, centroid
+    return Math.min(f1, f2)
 
-        # handle the fix last point
-        if points.length is 0
-          result.push prev
-          break
 
-        point = points[points.length-1]
-        space = prev.dist point
+  # 1: Resampling of a gesture.
+  #
+  # @param {Array} points The points of a move.
+  #
+  # @return Array The resampled gesture.
+  __resample = (points) ->
+    seperator = (___length points) / (_options.parts - 1)
+    distance = 0.0
+    resampled = []
+    resampled.push [points[0][0], points[0][1]]
+    idx = 1
+    while idx < points.length
+      prev = points[idx - 1]
+      point = points[idx]
+      space = ___distance(prev, point)
+      if (distance + space) >= seperator
+        x = prev[0] + ((seperator - distance) / space) * (point[0] - prev[0])
+        y = prev[1] + ((seperator - distance) / space) * (point[1] - prev[1])
+        resampled.push [x, y]
+        points.splice idx, 0, [x, y]
+        distance = 0.0
+      else
+        distance += space
+      idx += 1
 
-        if ((distance+space) >= seperator)
-          vector = new Vector(prev.x+((seperator-distance)/space)*(point.x-prev.x), prev.y+((seperator-distance)/space)*(point.y-prev.y))
-          result.push vector
-          points.push vector
-          distance = 0
+    while resampled.length < _options.parts
+      resampled.push [points[points.length-1][0], points[points.length-1][1]]
 
-          if result.length is (@ALGO.parts-1)
-            result.push points[points.length-1]
-            break
+    return resampled
 
-        else
-          distance += space
 
-    if result.length isnt @ALGO.parts
-      point = result[result.length-1]
-      for i in [result.length...@ALGO.parts]
-        result.push point
+  # 2: Rotation of the gesture.
+  #
+  # @param {Array} points The points of a move.
+  #
+  # @return Array The rotated gesture.
+  __rotateToZero = (points) ->
+    centroid = ___centroid points
+    theta = Math.atan2(centroid[1] - points[0][1], centroid[0] - points[0][0])
+    return ___rotate points, -theta, centroid
 
+
+  # 3: Scaling of a gesture.
+  #
+  # @param {Array} points The points of a move.
+  #
+  # @return Array The scaled gesture.
+  __scaleToSquare = (points) ->
+    minX = minY = +Infinity
+    maxX = maxY = -Infinity
+    for point in points
+      minX = Math.min(point[0], minX)
+      maxX = Math.max(point[0], maxX)
+      minY = Math.min(point[1], minY)
+      maxY = Math.max(point[1], maxY)
+    deltaX = maxX - minX
+    deltaY = maxY - minY
+
+    offset = [SIZE / deltaX, SIZE / deltaY]
+    return ___scale points, offset
+
+
+  # 4: Translation of a gesture.
+  #
+  # @param {Array} points The points of a move.
+  #
+  # @return Array The translated gesture.
+  __translateToOrigin = (points) ->
+    centroid = ___centroid points
+    centroid[0] *= -1
+    centroid[1] *= -1
+    return ___translate points, centroid
+
+
+  # Compute the delta space between two sets of points at a specific angle.
+  #
+  # @param {Array} points1 The points of a move.
+  # @param {Array} points2 The points of a move.
+  # @param {Float} radians The radian value.
+  #
+  # @return Float The computed distance.
+  __distanceAtAngle = (points1, points2, radians, centroid) ->
+    _points1 = ___rotate points1, radians, centroid
+    result = ___delta _points1, points2
     return result
 
 
+  # Compute the delta space between two sets of points.
   #
-  # rotate the points
+  # @param {Array} points1 The points of a move.
+  # @param {Array} points2 The points of a move.
   #
-  __r2Zero: (points) ->
+  # @return Float The computed distance.
+  ___delta = (points1, points2) ->
+    delta = 0.0
+    for point, idx in points1
+      delta += ___distance(points1[idx], points2[idx])
+    return delta / points1.length
 
-    centroid = @___centroid points
-    theta = Math.atan2 centroid.y-points[0].y, centroid.x-points[0].x
 
-    return @___r points, -theta, centroid
-
-
+  # Compute the distance of a gesture.
   #
-  # scale the points to the bounding box
+  # @param {Array} points The points of a move.
   #
-  __s2Square: (points) ->
-
-    maxX = maxY = -Infinity
-    minX = minY = +Infinity
-
-    for point in points
-      minX = Math.min point.x, minX
-      maxX = Math.max point.x, maxX
-      minY = Math.min point.y, minY
-      maxY = Math.max point.y, maxY
-
-    return @___s points, new Vector @ALGO.size/(maxX-minX), @ALGO.size/(maxY-minY)
-
-
-  #
-  # translate the points to origin
-  #
-  __t2Origin: (points) ->
-
-    centroid = @___centroid points
-    return @___t points, centroid.mult -1
-
-
-  #
-  # find the best template
-  #
-  __findBestTemplate: (points, template_points) ->
-
-    a = @___rd -@ALGO.angle
-    b = @___rd @ALGO.angle
-    treshold = @___rd @ALGO.step
-
-    c = (1.0-@MATH.PHI)*b + @MATH.PHI*a
-    d = (1.0-@MATH.PHI)*a + (@MATH.PHI*b)
-
-    path_a = @___getDifferenceAtAngle points, template_points, c
-    path_b = @___getDifferenceAtAngle points, template_points, d
-
-    if path_a isnt +Infinity and path_b isnt +Infinity
-      while Math.abs(b-a)>treshold
-        if path_a < path_b
-          b = d
-          d = c
-          path_b = path_a
-          c = @MATH.PHI*a + (1.0-@MATH.PHI)*b
-          path_a = @___getDifferenceAtAngle points, template_points, c
-        else
-          a = c
-          c = d
-          path_a = path_b
-          d = @MATH.PHI*b + (1.0-@MATH.PHI)*a
-          path_b = @___getDifferenceAtAngle points, template_points, d
-      return Math.min path_a, path_b
-    return +Infinity
-
-
-  #
-  # calculate the centroid of a path
-  #
-  ___centroid: (points) ->
-    centroid = new Vector
-    for p in points
-      centroid.add p
-    centroid.div points.length
-    return centroid
-
-
-  #
-  # calculate the length of a path
-  #
-  ___length: (points) ->
-
+  # @return Float The computed distance.
+  ___length = (points) ->
     length = 0.0
-    tmp = null
-
-    for p in points
-      if tmp isnt null
-        length += p.dist tmp
-      tmp = p
-
+    prev = null
+    for point in points
+      if prev isnt null
+        length += ___distance(prev, point)
+      prev = point
     return length
 
 
+  # Compute the euclidean distance between two points.
   #
-  # calculate the difference between two paths at a specific angle
+  # @param {Array} p1 The first two dimensional point.
+  # @param {Array} p2 The second two dimensional point.
   #
-  ___getDifferenceAtAngle: (points, template_points, radians) ->
+  # @return Float The computed euclidean distance.
+  ___distance = (p1, p2) ->
+    x = Math.pow(p1[0] - p2[0], 2)
+    y = Math.pow(p1[1] - p2[1], 2)
+    return Math.sqrt(x + y)
 
-    centroid = @___centroid points
-    points = @___r points, radians, centroid
 
-    return @___getDifference points, template_points
-
-
+  # Compute the centroid of a set of points.
   #
-  # calculate the difference between two paths
+  # @param {Array} points1 The points of a move.
   #
-  ___getDifference: (template, candidate) ->
-
-    distance = 0.0
-    for point, i in template
-      distance += point.dist candidate[i]
-
-    return distance / template.length
-
-
-  #
-  # translation
-  #
-  ___t: (points, offset) ->
-
+  # @return Array The centroid object.
+  ___centroid = (points) ->
+    x = 0.0
+    y = 0.0
     for point in points
-      point.add offset
+      x += point[0]
+      y += point[1]
+    x /= points.length
+    y /= points.length
+    return [x, y]
 
+
+  # Rotate a gesture.
+  #
+  # @param {Array} points  The points of a move.
+  # @param {Float} radians The rotation angle.
+  # @param {Array} pivot   The pivot of the rotation.
+  #
+  # @return Array The rotated gesture.
+  ___rotate = (points, radians, pivot) ->
+    sin = Math.sin(radians)
+    cos = Math.cos(radians)
+    neew = []
+    for point, idx in points
+      deltaX = points[idx][0] - pivot[0]
+      deltaY = points[idx][1] - pivot[1]
+      points[idx][0] = deltaX * cos - deltaY * sin + pivot[0]
+      points[idx][1] = deltaX * sin + deltaY * cos + pivot[1]
     return points
 
 
+  # Scale a gesture.
   #
-  # scaling
+  # @param {Array} points The points of a move.
+  # @param {Array} offset The scalar values.
   #
-  ___s: (points, offset) ->
-
-    for point in points
-      point.mult offset
-
+  # @return Array The scaled gesture.
+  ___scale = (points, offset) ->
+    for point, idx in points
+      points[idx][0] *= offset[0]
+      points[idx][1] *= offset[1]
     return points
 
 
+  # Translate a gesture.
   #
-  # rotation
+  # @param {Array} points The points of a move.
+  # @param {Array} offset The translation values.
   #
-  ___r: (points, radians, pivot) ->
-
-    sin = Math.sin radians
-    cos = Math.cos radians
-
-    for point, i in points
-      x = (point.x-pivot.x)*cos - (point.y-pivot.y)*sin + pivot.x
-      y = (point.x-pivot.x)*sin + (point.y-pivot.y)*cos + pivot.y
-      points[i] = new Vector x, y
-
+  # @return Array The translated gesture.
+  ___translate = (points, offset) ->
+    for point, idx in points
+      points[idx][0] += offset[0]
+      points[idx][1] += offset[1]
     return points
 
 
+  # Compute the radians from degrees.
   #
-  # convert degrees to radians
+  # @param {Float} degrees The degree value.
   #
-  ___rd: (degrees) ->
-
+  # @return Float The computed radian value.
+  ___radians = (degrees) ->
     return degrees * Math.PI / 180.0
 
-window.OneDollar = OneDollar
+
+# Environment and testing:
+if typeof exports isnt 'undefined'
+  exports.OneDollar = OneDollar
