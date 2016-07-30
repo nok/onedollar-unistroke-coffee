@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>OneDollar.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.2/p5.min.js" charset="utf-8"></script>
+    <script src="../../lib/onedollar.js"></script>
+    <style media="screen">
+      html, body {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        position: relative;
+      }
+      .main {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      .sketch {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main" role="main">
+      <div id="container" class="sketch"></div>
+    </div>
+    <script>
+      var sketch = function(p) {
+        var one = new OneDollar();
+        one.add('triangle', [[627,213],[626,217],[617,234],[611,248],[603,264],[590,287],[552,329],[524,358],[489,383],[461,410],[426,444],[416,454],[407,466],[405,469],[411,469],[428,469],[453,470],[513,478],[555,483],[606,493],[658,499],[727,505],[762,507],[785,508],[795,508],[796,505],[796,503],[796,502],[796,495],[790,473],[785,462],[776,447],[767,430],[742,390],[724,362],[708,340],[695,321],[673,289],[664,272],[660,263],[659,261],[658,256],[658,255],[658,255]]);
+        one.add('circle', [[621,225],[616,225],[608,225],[601,225],[594,227],[572,235],[562,241],[548,251],[532,270],[504,314],[495,340],[492,363],[492,385],[494,422],[505,447],[524,470],[550,492],[607,523],[649,531],[689,531],[751,523],[782,510],[807,495],[826,470],[851,420],[859,393],[860,366],[858,339],[852,311],[833,272],[815,248],[793,229],[768,214],[729,198],[704,191],[678,189],[655,188],[623,188],[614,188],[611,188],[611,188]]);
+        one.on('triangle', function(result) {
+          console.log(result);
+        });
+        var candidate = [];
+
+        p.setup = function() {
+          p.createCanvas(p.windowWidth, p.windowHeight);
+          p.background(255);
+        };
+        p.draw = function() {
+          p.background(255);
+          p.noFill();
+          p.beginShape();
+          p.stroke(0);
+          if(candidate.length > 3) {
+            for(var i=0; i<candidate.length; i++) {
+              p.vertex(candidate[i][0], candidate[i][1]);
+            }
+          }
+          p.endShape();
+        };
+        p.mousePressed = function() {
+          candidate = [];
+          candidate.push([p.mouseX, p.mouseY]);
+          one.start([p.mouseX, p.mouseY]);
+        };
+        p.mouseDragged = function() {
+          candidate.push([p.mouseX, p.mouseY]);
+          one.update([p.mouseX, p.mouseY]);
+        };
+        p.mouseReleased = function() {
+          candidate.push([p.mouseX, p.mouseY]);
+
+          // str = "[";
+          // for(var i=0; i<candidate.length; i++) {
+          //   str = str + "[" + candidate[i][0] + "," + candidate[i][1] + "],";
+          // }
+          // str = str + "]";
+          // console.log(str);
+
+          var result = one.end([p.mouseX, p.mouseY]);
+          console.log('end', result);
+        };
+        p.windowResized = function() {
+          p.resizeCanvas(p.windowWidth, p.windowHeight);
+        };
+      };
+      new p5(sketch, 'container');
+    </script>
+  </body>
+</html>
