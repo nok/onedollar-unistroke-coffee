@@ -1,18 +1,24 @@
 {
   "name"          : "OneDollar.js",
-  "version"       : "1.1.1",
+  "version"       : "2.0.0",
   "main": [
-    "./lib/onedollar.js",
-    "./lib/onedollar.min.js",
-    "./lib/jquery.onedollar.js",
-    "./lib/jquery.onedollar.min.js"
+    "lib/onedollar.js",
+    "lib/onedollar.min.js",
+    "lib/jquery.onedollar.js",
+    "lib/jquery.onedollar.min.js"
   ],
   "ignore": [
+    "examples",
+    "lib/maps",
+    "src",
+    "test",
     ".git",
     ".gitignore",
-    "Gruntfile.coffee",
-    "examples",
-    "src",
-    "node_modules"
-  ]
+    "coffeelint.json",
+    "gulpfile.js",
+    "LICENSE.txt",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "https://github.com/nok/onedollar-coffeescript"
 }
