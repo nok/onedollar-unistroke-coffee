@@ -1,8 +1,8 @@
 {
   "name": "OneDollar.js",
   "description": "Implementation of the $1 Gesture Recognizer, a two-dimensional template based gesture recognition, for JavaScript and jQuery.",
-  "version": "1.1.1",
-  "main": "/lib/onedollar.min.js",
+  "version": "2.0.0",
+  "main": "/dist/onedollar.min.js",
   "directories": {
     "example": "examples"
   },
@@ -13,15 +13,27 @@
   "author": "Darius Morawiec",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "gitHead": "be544c89d589b983ef49984f967e8a90ae78472d",
   "bugs": {
-    "url": "https://github.com/voidplus/onedollar-coffeescript/issues"
+    "url": "https://github.com/nok/onedollar-coffeescript/issues"
   },
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-coffee": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-file-info": "^1.0.8"
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-coffee": "^2.3.2",
+    "gulp-coffeelint": "^0.6.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-mocha": "^2.2.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-size": "^2.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.4",
+    "gulp-util": "^3.0.7",
+    "mocha": "^2.5.3"
+  },
+  "dependencies": {
+    "node-notifier": "^4.6.0"
   }
 }
