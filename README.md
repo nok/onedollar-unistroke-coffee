@@ -97,12 +97,46 @@ $('#js-sketch').onedollar({
 
 ## Download
 
+<table>
+    <thead>
+        <tr>
+            <th width="1%">Variant</th>
+            <th>File Size</th>
+            <th>Gzipped</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/onedollar.js?raw=true">onedollar.js</a></td>
+            <td>10.4 kB</td>
+            <td>2.62 kB</td>
+        </tr>
+        <tr>
+            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/onedollar.min.js?raw=true">onedollar.min.js</a></td>
+            <td>3.89 kB</td>
+            <td><strong>1.63 kB</strong></td>
+        </tr>
+        <tr>
+            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/jquery.onedollar.js?raw=true">jquery.onedollar.js</a></td>
+            <td>2.84 kB</td>
+            <td>884 B</td>
+        </tr>
+        <tr>
+            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/jquery.onedollar.min.js?raw=true">jquery.onedollar.min.js</a></td>
+            <td>1.18 kB</td>
+            <td><strong>588 B</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<!--
 Variant | File Size | Gzipped
 --- | --- | ---
 [onedollar.js](lib/onedollar.js?raw=true) | 10.4 kB | 2.62 kB
 [onedollar.min.js](lib/onedollar.min.js?raw=true) | 3.89 kB | **1.63 kB**
 [jquery.onedollar.js](lib/jquery.onedollar.js?raw=true) | 2.84 kB | 884 B
 [jquery.onedollar.min.js](lib/jquery.onedollar.min.js?raw=true) | 1.18 kB | **588 B**
+-->
 
 Note: For older versions have a look at the [releases](releases).
 
@@ -119,91 +153,91 @@ bower install onedollar#2.0.0
 ## API
 
 <table>
-  <thead>
-    <tr>
-      <th>Method</th>
-      <th>Arguments</th>
-      <th>Return</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>add</strong></td>
-      <td>name : <code>String</code>, path : <code>Array</code></td>
-      <td>this : <code>OneDollar</code></td>
-      <td>Add a new template</td>
-    </tr>
-    <tr>
-      <td colspan="4"><code>one.add('circle', [[50,60], /* ... */ [20,30]]);</code></td>
-    </tr>
-    <tr>
-      <td><strong>remove</strong></td>
-      <td>name : <code>String</code></td>
-      <td>this : <code>OneDollar</code></td>
-      <td>Remove added template</td>
-    </tr>
-    <tr>
-      <td colspan="4"><code>one.remove('circle');`</td>
+    <thead>
+        <tr>
+            <th style="width:1%;">Method</th>
+            <th>Arguments</th>
+            <th>Return</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>add</strong></td>
+            <td>name : <code>String</code>, path : <code>Array</code></td>
+            <td>this : <code>OneDollar</code></td>
+            <td>Add a new template</td>
+        </tr>
+        <tr>
+            <td colspan="4"><code>one.add('circle', [[50,60], /* ... */ [20,30]]);</code></td>
+        </tr>
+        <tr>
+            <td><strong>remove</strong></td>
+            <td>name : <code>String</code></td>
+            <td>this : <code>OneDollar</code></td>
+            <td>Remove added template</td>
+        </tr>
+        <tr>
+            <td colspan="4"><code>one.remove('circle');`</td>
     </tr>
     <tr>
       <td><strong>on</strong></td>
       <td>name(s) : <code>String</code>, callback : <code>Function</code></td>
-      <td>this : <code>OneDollar</code></td>
-      <td>Bind callbacks</td>
-    </tr>
-    <tr>
-      <td colspan="4"><code>one.on('circle', function(results) { /* ... */ });</code></td>
-    </tr>
-    <tr>
-      <td><strong>off</strong></td>
-      <td>name : <code>String</code></td>
-      <td>this : <code>OneDollar</code></td>
-      <td>Unbind callback</td>
-    </tr>
-    <tr>
-      <td colspan="4"><code>one.off('circle');</code></td>
-    </tr>
-    <tr>
-      <td><strong>check</strong></td>
-      <td>path : <code>Array</code></td>
-      <td>results : <code>Object</code></td>
-      <td>Check the path</td>
-    </tr>
-    <tr>
-      <td colspan="4"><code>var results = one.check([[50,60], /* ... */ [20,30]]);</code></td>
-    </tr>
-    <tr>
-      <td><strong>start</strong></td>
-      <td>[index : <code>Integer</code>], point : <code>Array[2]</code></td>
-      <td>this : <code>OneDollar</code></td>
-      <td>Start a new candidate</td>
-    </tr>
-    <tr>
-      <td colspan="2"><code>one.start([50,60]);</code></td>
-      <td colspan="2"><code>one.start(1, [50,60]);</code></td>
-    </tr>
-    <tr>
-      <td><strong>update</strong></td>
-      <td>[index : <code>Integer</code>], point : <code>Array[2]</code></td>
-      <td>this : <code>OneDollar</code></td>
-      <td>Update a started candidate</td>
-    </tr>
-    <tr>
-      <td colspan="2"><code>one.update([50,60]);</code></td>
-      <td colspan="2"><code>one.update(1, [50,60]);</code></td>
-    </tr>
-    <tr>
-      <td><strong>end</strong></td>
-      <td>[index : <code>Integer</code>], point : <code>Array[2]</code></td>
-      <td>results : <code>Object</code></td>
-      <td>End a started candidate</td>
-    </tr>
-    <tr>
-      <td colspan="2"><code>var results = one.end([50,60]);</code></td>
-      <td colspan="2"><code>var results = one.end(1, [50,60]);</code></td>
-    </tr>
-  </tbody>
+            <td>this : <code>OneDollar</code></td>
+            <td>Bind callbacks</td>
+        </tr>
+        <tr>
+            <td colspan="4"><code>one.on('circle', function(results) { /* ... */ });</code></td>
+        </tr>
+        <tr>
+            <td><strong>off</strong></td>
+            <td>name : <code>String</code></td>
+            <td>this : <code>OneDollar</code></td>
+            <td>Unbind callback</td>
+        </tr>
+        <tr>
+            <td colspan="4"><code>one.off('circle');</code></td>
+        </tr>
+        <tr>
+            <td><strong>check</strong></td>
+            <td>path : <code>Array</code></td>
+            <td>results : <code>Object</code></td>
+            <td>Check the path</td>
+        </tr>
+        <tr>
+            <td colspan="4"><code>var results = one.check([[50,60], /* ... */ [20,30]]);</code></td>
+        </tr>
+        <tr>
+            <td><strong>start</strong></td>
+            <td>[index : <code>Integer</code>], point : <code>Array[2]</code></td>
+            <td>this : <code>OneDollar</code></td>
+            <td>Start a new candidate</td>
+        </tr>
+        <tr>
+            <td colspan="2"><code>one.start([50,60]);</code></td>
+            <td colspan="2"><code>one.start(1, [50,60]);</code></td>
+        </tr>
+        <tr>
+            <td><strong>update</strong></td>
+            <td>[index : <code>Integer</code>], point : <code>Array[2]</code></td>
+            <td>this : <code>OneDollar</code></td>
+            <td>Update a started candidate</td>
+        </tr>
+        <tr>
+            <td colspan="2"><code>one.update([50,60]);</code></td>
+            <td colspan="2"><code>one.update(1, [50,60]);</code></td>
+        </tr>
+        <tr>
+            <td><strong>end</strong></td>
+            <td>[index : <code>Integer</code>], point : <code>Array[2]</code></td>
+            <td>results : <code>Object</code></td>
+            <td>End a started candidate</td>
+        </tr>
+        <tr>
+            <td colspan="2"><code>var results = one.end([50,60]);</code></td>
+            <td colspan="2"><code>var results = one.end(1, [50,60]);</code></td>
+        </tr>
+    </tbody>
 </table>
 
 Example:
@@ -219,6 +253,56 @@ one.add('circle', [[50,60], [70,80], /* ... */ [90,10], [20,30]]);
 
 Note: All options are optional. For further details read the [official paper](http://faculty.washington.edu/wobbrock/pubs/uist-07.01.pdf).
 
+<table>
+    <thead>
+        <tr>
+            <th width="1%">Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>options.score</td>
+            <td><code>Number</code> (0-100)</td>
+            <td>80</td>
+            <td>The similarity threshold to apply the callback(s)</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>options.parts</td>
+            <td><code>Number</code></td>
+            <td>64</td>
+            <td>The number of resampling points</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>options.step</td>
+            <td><code>Number</code></td>
+            <td>2</td>
+            <td>The degree of one single rotation step</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>options.angle</td>
+            <td><code>Number</code></td>
+            <td>45</td>
+            <td>The last degree of rotation</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>options.size</td>
+            <td><code>Number</code></td>
+            <td>250</td>
+            <td>The width and height of the scaling bounding box</td>
+            <td>No</td>
+        </tr>
+    </tbody>
+</table>
+
+<!--
 Name | Type | Default | Description | Required
 --- | --- | --- | --- | ---
 options.score | `Number` (0-100) | 80 | The similarity threshold to apply the callback(s) | No
@@ -226,6 +310,7 @@ options.parts | `Number` | 64 | The number of resampling points | No
 options.step | `Number` | 2 | The degree of one single rotation step | No
 options.angle | `Number` | 45 | The last degree of rotation | No
 options.size | `Number` | 250 | The width and height of the scaling bounding box | No
+-->
 
 Example:
 
@@ -245,6 +330,59 @@ var one = new OneDollar(options);
 
 Note: Each `check` and `end` method will return a result set.
 
+<table>
+    <thead>
+        <tr>
+            <th width="1%">Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>results.recognized</td>
+            <td><code>Boolean</code></td>
+            <td>Is a template recognized?</td>
+        </tr>
+        <tr>
+            <td>results.score</td>
+            <td><code>Number</code></td>
+            <td>The score value of the best matched template</td>
+        </tr>
+        <tr>
+            <td>results.name</td>
+            <td><code>Number</code></td>
+            <td>The name of the best matched template</td>
+        </tr>
+        <tr>
+            <td>results.path</td>
+            <td><code>Object</code></td>
+            <td>↓</td>
+        </tr>
+        <tr>
+            <td>results.path.start</td>
+            <td><code>Array[2]</code></td>
+            <td>The start point of the candidate</td>
+        </tr>
+        <tr>
+            <td>results.path.end</td>
+            <td><code>Array[2]</code></td>
+            <td>The end point of the candidate</td>
+        </tr>
+        <tr>
+            <td>results.path.centroid</td>
+            <td><code>Array[2]</code></td>
+            <td>The centroid of the candidate</td>
+        </tr>
+        <tr>
+            <td>results.ranking</td>
+            <td><code>Array</code></td>
+            <td>A sorted ranking of matched templates</td>
+        </tr>
+    </tbody>
+</table>
+
+<!--
 Name | Type | Description
 --- | --- | ---
 results.recognized | `Boolean` | Is a template recognized?
@@ -255,6 +393,7 @@ results.path.start | `Array[2]` | The start point of the candidate
 results.path.end | `Array[2]` | The end point of the candidate
 results.path.centroid | `Array[2]` | The centroid of the candidate
 results.ranking | `Array` | A sorted ranking of matched templates
+-->
 
 Example:
 
