@@ -71,6 +71,29 @@ one.check([[50,60], [70,80], /* ... */ [90,10], [20,30]]);
 // one.end([20,30]);
 ```
 
+### jQuery
+
+```javascript
+$('#js-sketch').onedollar({
+//  options: {
+//    'score': 80,
+//    'parts': 64,
+//    'step': 2,
+//    'angle': 45,
+//    'size': 250
+//  },
+  templates: {
+    'circle': [[50,60], [70,80], /* ... */ [90,10], [20,30]],
+    'triangle': [[10,20], [30,40], /* ... */ [50,60], [70,80]] 
+  },
+  on: [
+    ['circle triangle', function(results) {
+      console.log(results);
+    }]
+  ]
+});
+```
+
 
 ## Download
 
@@ -81,15 +104,15 @@ Variant | File Size | Gzipped
 [jquery.onedollar.js](lib/jquery.onedollar.js?raw=true) | 2.84 kB | 884 B
 [jquery.onedollar.min.js](lib/jquery.onedollar.min.js?raw=true) | 1.18 kB | **588 B**
 
-For older versions have a look at the [releases](releases).
+Note: For older versions have a look at the [releases](releases).
 
 
 ## Installation
 
 Either you can download the files manually or use the package manager [Bower](https://github.com/twitter/bower):
 
-```shell
-bower install onedollar
+```bash
+bower install onedollar#2.0.0
 ```
 
 
@@ -211,7 +234,7 @@ var options = {
 var one = new OneDollar(options);
 ```
 
-Please note, that all options are optional. For further details read the [official paper](http://faculty.washington.edu/wobbrock/pubs/uist-07.01.pdf).
+Note: All options are optional. For further details read the [official paper](http://faculty.washington.edu/wobbrock/pubs/uist-07.01.pdf).
 
 
 ## Results
@@ -227,10 +250,11 @@ results.path.end | `Array[2]` | The end point of the candidate
 results.path.centroid | `Array[2]` | The centroid of the candidate
 results.ranking | `Array` | A sorted ranking of matched templates
 
+Note: Each `check` and `end` method will return a result set.
+
 ```javascript
 var results = one.check([[50,60], [70,80], /* ... */ [90,10], [20,30]]);
 console.log(results);
-
 // {
 //   recognized: true,
 //   score: 84.27,
@@ -242,30 +266,6 @@ console.log(results);
 //   },
 //   ranking: Array
 // }
-```
-
-
-### jQuery
-
-```javascript
-$('#js-sketch').onedollar({
-//  options: {
-//    'score': 80,
-//    'parts': 64,
-//    'step': 2,
-//    'angle': 45,
-//    'size': 250
-//  },
-  templates: {
-    'circle': [[50,60], [70,80], /* ... */ [90,10], [20,30]],
-    'triangle': [[10,20], [30,40], /* ... */ [50,60], [70,80]] 
-  },
-  on: [
-    ['circle triangle', function(results) {
-      console.log(results);
-    }]
-  ]
-});
 ```
 
 
