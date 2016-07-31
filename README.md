@@ -107,22 +107,22 @@ $('#js-sketch').onedollar({
     </thead>
     <tbody>
         <tr>
-            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/onedollar.js?raw=true">onedollar.js</a></td>
+            <td><a href="lib/onedollar.js?raw=true">onedollar.js</a></td>
             <td>10.4 kB</td>
             <td>2.62 kB</td>
         </tr>
         <tr>
-            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/onedollar.min.js?raw=true">onedollar.min.js</a></td>
+            <td><a href="lib/onedollar.min.js?raw=true">onedollar.min.js</a></td>
             <td>3.89 kB</td>
             <td><strong>1.63 kB</strong></td>
         </tr>
         <tr>
-            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/jquery.onedollar.js?raw=true">jquery.onedollar.js</a></td>
+            <td><a href="lib/jquery.onedollar.js?raw=true">jquery.onedollar.js</a></td>
             <td>2.84 kB</td>
             <td>884 B</td>
         </tr>
         <tr>
-            <td><a href="/nok/onedollar-coffeescript/blob/master/lib/jquery.onedollar.min.js?raw=true">jquery.onedollar.min.js</a></td>
+            <td><a href="lib/jquery.onedollar.min.js?raw=true">jquery.onedollar.min.js</a></td>
             <td>1.18 kB</td>
             <td><strong>588 B</strong></td>
         </tr>
@@ -155,7 +155,7 @@ bower install onedollar#2.0.0
 <table>
     <thead>
         <tr>
-            <th style="width:1%;">Method</th>
+            <th width="1%">Method</th>
             <th>Arguments</th>
             <th>Return</th>
             <th>Description</th>
