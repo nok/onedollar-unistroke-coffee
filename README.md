@@ -1,7 +1,6 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-coffeescript/master/LICENSE.txt)
 
-===
-
+---
 
 # OneDollar.js
 
@@ -11,12 +10,12 @@ Implementation of the [$1 Gesture Recognizer](http://depts.washington.edu/aimgro
 ## Table of Contents
 
 - [About](#about)
+- [Usage](#usage)
 - [Download](#download)
 - [Installation](#installation)
 - [API](#api)
 - [Options](#options)
 - [Results](#results)
-- [Usage](#usage)
 - [Examples](#examples)
 - [Questions?](#questions)
 - [License](#license)
@@ -31,14 +30,56 @@ Gestures can be recognised at any position, scale, and under any rotation. The s
 > Wobbrock, J.O., Wilson, A.D. and Li, Y. (2007). [Gestures without libraries, toolkits or training: A $1 recognizer for user interface prototypes](http://faculty.washington.edu/wobbrock/pubs/uist-07.01.pdf). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST '07). Newport, Rhode Island (October 7-10, 2007). New York: ACM Press, pp. 159-168.
 
 
+## Usage
+
+### Vanilla JS
+
+```javascript
+var one = new OneDollar();
+
+one.add('circle', [[50,60], [70,80], /* ... */ [90,10], [20,30]]);
+one.add('triangle', [[10,20], [30,40], /* ... */ [50,60], [70,80]]);
+
+one.on('circle triangle', function(result){
+  console.log('do this');
+});
+
+// OR:
+// one.on('*', function(result){
+//   console.log('do that');
+// });
+
+// OR:
+// one.on(function(result){
+//   console.log('do that');
+// });
+
+one.check([[50,60], [70,80], /* ... */ [90,10], [20,30]]);
+
+// OR:
+// one.start(1, [50,60]);
+// one.update(1, [70,80]);
+// /* ... */
+// one.update(1, [90,10]);
+// one.end(1, [20,30]);
+
+// OR:
+// one.start([50,60]);
+// one.update([70,80]);
+// /* ... */
+// one.update([90,10]);
+// one.end([20,30]);
+```
+
+
 ## Download
 
 Variant | File Size | Gzipped
 --- | --- | ---
 [onedollar.js](lib/onedollar.js?raw=true) | 10.4 kB | 2.62 kB
 [onedollar.min.js](lib/onedollar.min.js?raw=true) | 3.89 kB | **1.63 kB**
-[jquery.onedollar.js](lib/jquery.onedollar.js) | 2.84 kB | 884 B
-[jquery.onedollar.min.js](lib/jquery.onedollar.min.js) | 1.18 kB | **588 B**
+[jquery.onedollar.js](lib/jquery.onedollar.js?raw=true) | 2.84 kB | 884 B
+[jquery.onedollar.min.js](lib/jquery.onedollar.min.js?raw=true) | 1.18 kB | **588 B**
 
 For older versions have a look at the [releases](releases).
 
@@ -186,7 +227,7 @@ results.path.end | `Array[2]` | The end point of the candidate
 results.path.centroid | `Array[2]` | The centroid of the candidate
 results.ranking | `Array` | A sorted ranking of matched templates
 
-```
+```javascript
 var results = one.check([[50,60], [70,80], /* ... */ [90,10], [20,30]]);
 console.log(results);
 
@@ -201,48 +242,6 @@ console.log(results);
 //   },
 //   ranking: Array
 // }
-```
-
-
-## Usage
-
-### Vanilla JS
-
-```javascript
-var one = new OneDollar();
-
-one.add('circle', [[50,60], [70,80], /* ... */ [90,10], [20,30]]);
-one.add('triangle', [[10,20], [30,40], /* ... */ [50,60], [70,80]]);
-
-one.on('circle triangle', function(result){
-  console.log('do this');
-});
-
-// OR:
-// one.on('*', function(result){
-//   console.log('do that');
-// });
-
-// OR:
-// one.on(function(result){
-//   console.log('do that');
-// });
-
-one.check([[50,60], [70,80], /* ... */ [90,10], [20,30]]);
-
-// OR:
-// one.start(1, [50,60]);
-// one.update(1, [70,80]);
-// /* ... */
-// one.update(1, [90,10]);
-// one.end(1, [20,30]);
-
-// OR:
-// one.start([50,60]);
-// one.update([70,80]);
-// /* ... */
-// one.update([90,10]);
-// one.end([20,30]);
 ```
 
 
