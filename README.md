@@ -206,6 +206,8 @@ bower install onedollar#2.0.0
   </tbody>
 </table>
 
+Example:
+
 ```javascript
 var one = new OneDollar();
 one.add('circle', [[50,60], [70,80], /* ... */ [90,10], [20,30]]);
@@ -215,6 +217,8 @@ one.add('circle', [[50,60], [70,80], /* ... */ [90,10], [20,30]]);
 
 ## Options
 
+Note: All options are optional. For further details read the [official paper](http://faculty.washington.edu/wobbrock/pubs/uist-07.01.pdf).
+
 Name | Type | Default | Description | Required
 --- | --- | --- | --- | ---
 options.score | `Number` (0-100) | 80 | The similarity threshold to apply the callback(s) | No
@@ -222,6 +226,8 @@ options.parts | `Number` | 64 | The number of resampling points | No
 options.step | `Number` | 2 | The degree of one single rotation step | No
 options.angle | `Number` | 45 | The last degree of rotation | No
 options.size | `Number` | 250 | The width and height of the scaling bounding box | No
+
+Example:
 
 ```javascript
 var options = {
@@ -234,10 +240,10 @@ var options = {
 var one = new OneDollar(options);
 ```
 
-Note: All options are optional. For further details read the [official paper](http://faculty.washington.edu/wobbrock/pubs/uist-07.01.pdf).
-
 
 ## Results
+
+Note: Each `check` and `end` method will return a result set.
 
 Name | Type | Description
 --- | --- | ---
@@ -250,7 +256,7 @@ results.path.end | `Array[2]` | The end point of the candidate
 results.path.centroid | `Array[2]` | The centroid of the candidate
 results.ranking | `Array` | A sorted ranking of matched templates
 
-Note: Each `check` and `end` method will return a result set.
+Example:
 
 ```javascript
 var results = one.check([[50,60], [70,80], /* ... */ [90,10], [20,30]]);
