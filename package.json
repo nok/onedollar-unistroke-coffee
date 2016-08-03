@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/voidplus/onedollar-coffeescript.git"
+    "url": "https://github.com/nok/onedollar-unistroke-coffee.git"
   },
   "author": "Darius Morawiec",
   "license": "MIT",
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/nok/onedollar-coffeescript/issues"
+    "url": "https://github.com/nok/onedollar-unistroke-coffee/issues"
   },
   "devDependencies": {
     "chai": "^3.5.0",

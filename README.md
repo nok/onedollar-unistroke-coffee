@@ -1,4 +1,4 @@
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-coffeescript/master/LICENSE.txt)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-unistroke-coffee/master/LICENSE.txt)
 
 ---
 
@@ -84,7 +84,7 @@ $('#js-sketch').onedollar({
 //  },
   templates: {
     'circle': [[50,60], [70,80], /* ... */ [90,10], [20,30]],
-    'triangle': [[10,20], [30,40], /* ... */ [50,60], [70,80]] 
+    'triangle': [[10,20], [30,40], /* ... */ [50,60], [70,80]]
   },
   on: [
     ['circle triangle', function(results) {
