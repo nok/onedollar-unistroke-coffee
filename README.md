@@ -1,4 +1,4 @@
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-unistroke-coffee/master/LICENSE.txt)
+[![Build Status](https://travis-ci.org/nok/onedollar-unistroke-coffee.svg?branch=master)](https://travis-ci.org/nok/onedollar-unistroke-coffee) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-unistroke-coffee/master/LICENSE.txt)
 
 ---
 
