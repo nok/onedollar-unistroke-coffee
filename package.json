@@ -1,16 +1,19 @@
 {
   "name": "OneDollar.js",
-  "description": "Implementation of the $1 Gesture Recognizer, a two-dimensional template based gesture recognition, for JavaScript and jQuery.",
+  "description": "Implementation of the $1 Unistroke Recognizer, a two-dimensional template based gesture recognition, in CoffeeScript.",
+  "homepage": "https://github.com/nok/onedollar-unistroke-coffee",
   "version": "2.0.0",
-  "main": "/dist/onedollar.min.js",
+  "main": "./lib/onedollar.min.js",
+  "keywords": ["gesture", "recognition", "unistroke", "one", "dollar"],
   "directories": {
-    "example": "examples"
+    "example": "./examples",
+    "lib": "./lib"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/nok/onedollar-unistroke-coffee.git"
   },
-  "author": "Darius Morawiec",
+  "author": "Darius Morawiec (http://nok.onl)",
   "license": "MIT",
   "readmeFilename": "README.md",
   "bugs": {

@@ -4,8 +4,7 @@
 
 # OneDollar.js
 
-Implementation of the [$1 Gesture Recognizer](http://depts.washington.edu/aimgroup/proj/dollar/), a two-dimensional template based gesture recognition, in JavaScript.
-
+Implementation of the [$1 Unistroke Recognizer](http://depts.washington.edu/aimgroup/proj/dollar/), a two-dimensional template based gesture recognition, in CoffeeScript.
 
 ## Table of Contents
 
