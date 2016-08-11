@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/nok/onedollar-unistroke-coffee.svg?branch=master)](https://travis-ci.org/nok/onedollar-unistroke-coffee) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-unistroke-coffee/master/LICENSE.txt)
+[![Build Status](https://travis-ci.org/nok/onedollar-unistroke-coffee.svg?branch=master)](https://travis-ci.org/nok/onedollar-unistroke-coffee) [![npm package](https://img.shields.io/npm/v/OneDollar.js.svg)](https://www.npmjs.com/package/OneDollar.js) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-unistroke-coffee/master/LICENSE.txt)
 
 ---
 
@@ -142,10 +142,18 @@ Note: For older versions have a look at the [releases](releases).
 
 ## Installation
 
-Either you can download the files manually or use the package manager [Bower](https://github.com/twitter/bower):
+Option 1: Download the files [manually](lib) or clone the repository.
+
+Option 2: Use the package manager [Bower](https://github.com/twitter/bower):
 
 ```bash
 bower install onedollar#2.0.0
+```
+
+Option 3: Use the [node package manager](https://www.npmjs.com/):
+
+```bash
+npm install OneDollar.js
 ```
 
 
