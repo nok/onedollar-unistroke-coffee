@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/nok/onedollar-unistroke-coffee.svg?branch=master)](https://travis-ci.org/nok/onedollar-unistroke-coffee) [![npm package](https://img.shields.io/npm/v/OneDollar.js.svg)](https://www.npmjs.com/package/OneDollar.js) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-unistroke-coffee/master/LICENSE.txt)
-
----
-
 # OneDollar.js
+
+[![Build Status](https://travis-ci.org/nok/onedollar-unistroke-coffee.svg?branch=master)](https://travis-ci.org/nok/onedollar-unistroke-coffee)
+[![npm package](https://img.shields.io/npm/v/OneDollar.js.svg)](https://www.npmjs.com/package/OneDollar.js)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nok/onedollar-unistroke-coffee/master/LICENSE.txt)
 
 Implementation of the [$1 Unistroke Recognizer](http://depts.washington.edu/aimgroup/proj/dollar/), a two-dimensional template based gesture recognition, in CoffeeScript.
 
@@ -144,16 +144,16 @@ Note: For older versions have a look at the [releases](releases).
 
 Option 1: Download the files [manually](lib) or clone the repository.
 
-Option 2: Use the package manager [Bower](https://github.com/twitter/bower):
+Option 2: The library is available through [Bower](https://github.com/twitter/bower):
 
 ```bash
-bower install onedollar#2.0.0
+bower install --save onedollar
 ```
 
-Option 3: Use the [node package manager](https://www.npmjs.com/):
+Option 3: The library is available through [NPM](https://www.npmjs.com/):
 
 ```bash
-npm install OneDollar.js
+npm install --save onedollar.js
 ```
 
 
@@ -394,7 +394,7 @@ Name | Type | Description
 --- | --- | ---
 results.recognized | `Boolean` | Is a template recognized?
 results.score | `Number` | The score value of the best matched template
-results.name | `Number` | The name of the best matched template
+results.name | `String` | The name of the best matched template
 results.path | `Object` | ↓
 results.path.start | `Array[2]` | The start point of the candidate
 results.path.end | `Array[2]` | The end point of the candidate
