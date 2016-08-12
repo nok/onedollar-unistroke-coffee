@@ -358,7 +358,7 @@ Note: Each `check` and `end` method will return a result set.
         </tr>
         <tr>
             <td>results.name</td>
-            <td><code>Number</code></td>
+            <td><code>String</code></td>
             <td>The name of the best matched template</td>
         </tr>
         <tr>
